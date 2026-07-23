@@ -1,12 +1,31 @@
 aid: 2x
 name: 2X
-description: 2X is a company surfaced as a portfolio company of insight-partners and added to the API
-  Evangelist network as a stub for enrichment. This profile is a lead awaiting the enrichment pipeline.
+description: 2X is the global leader in B2B Marketing-as-a-Service (MaaS), a subscription-based
+  alternative to traditional B2B marketing delivery models. Founded in 2017 by three former
+  B2B CMOs and led by CEO Domenic Colasante, 2X provides AI-enabled marketing talent and
+  strategic consulting spanning marketing operations, MarTech management, campaign build
+  and demand generation, content and creative production, GTM engineering, and revenue
+  strategy consulting. With more than 1,000 team members across five continents, 2X serves
+  over 150 enterprise clients including SAP, Ricoh, Docker, Seismic, Qlik, and GoTo, and
+  is backed by private-equity firms Recognize and Insight Partners.
 url: https://raw.githubusercontent.com/api-evangelist/2x/refs/heads/main/apis.yml
+accessModel:
+  pricing: unknown
+  onboarding: unknown
+  trial: false
+  try_now: false
+  public: false
+  label: Unknown
+  confidence: low
+  source: []
+  generated: '2026-07-22'
+  method: derived
+image: https://2x.marketing/wp-content/uploads/2023/11/2X-OG-banners-2.jpg
 x-type: company
 x-source: vc-portfolio
 x-backed-by:
 - insight-partners
+- recognize
 x-tier: stub
 x-tier-reason: portfolio-lead
 specificationVersion: '0.20'
@@ -14,6 +33,13 @@ created: '2026-07-17'
 modified: '2026-07-17'
 tags:
 - Company
+- Marketing
+- Marketing as a Service
+- B2B
+- MarTech
+- Marketing Operations
+- Consulting
+- Artificial Intelligence
 apis: []
 maintainers:
 - FN: Kin Lane
@@ -21,5 +47,24 @@ maintainers:
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: DomainSecurity
+  url: security/2x-domain-security.yml
 - type: Website
   url: https://2x.marketing/
+- type: About
+  url: https://2x.marketing/about/
+- type: Blog
+  url: https://2x.marketing/insights/?post-type=blog
+- type: Support
+  url: https://2x.marketing/contact/
+- type: Careers
+  url: https://2x.marketing/career/
+- type: PrivacyPolicy
+  url: https://2x.marketing/privacy-policy/
+- type: LinkedIn
+  url: https://www.linkedin.com/company/2xmarketing
+x-enrichment:
+  date: '2026-07-19'
+  status: backfilled
+  pass: local-v1
+  note: backfilled from .gitignore signal + verified work evidence
