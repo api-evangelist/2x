@@ -2,6 +2,13 @@
   "repo": "2x",
   "feeds": [
     {
+      "source": "https://2x.marketing/about/feed/",
+      "feed_url": "https://2x.marketing/about/feed/",
+      "title": "",
+      "saved": 0,
+      "method": "feed"
+    },
+    {
       "source": "https://2x.marketing/about/",
       "feed_url": "https://2x.marketing/about/feed/",
       "title": "",
@@ -10,5 +17,5 @@
     }
   ],
   "post_count": 0,
-  "fetched": "2026-07-20T13:31:34Z"
+  "fetched": "2026-08-01T15:49:00Z"
 }
