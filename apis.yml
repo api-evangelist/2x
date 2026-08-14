@@ -1,36 +1,58 @@
 aid: 2x
 name: 2X
-description: 2X is the global leader in B2B Marketing-as-a-Service (MaaS), a subscription-based
-  alternative to traditional B2B marketing delivery models. Founded in 2017 by three former
-  B2B CMOs and led by CEO Domenic Colasante, 2X provides AI-enabled marketing talent and
-  strategic consulting spanning marketing operations, MarTech management, campaign build
-  and demand generation, content and creative production, GTM engineering, and revenue
-  strategy consulting. With more than 1,000 team members across five continents, 2X serves
-  over 150 enterprise clients including SAP, Ricoh, Docker, Seismic, Qlik, and GoTo, and
-  is backed by private-equity firms Recognize and Insight Partners.
+description: 2X is a B2B go-to-market services company that delivers what it calls GTM
+  Human-Agentic Services — AI agents, expert embedded teams, and intelligent workflows sold
+  through a subscription model rather than a traditional agency retainer. Founded in 2017 by
+  three former B2B CMOs including Domenic Colasante, 2X grew out of Marketing-as-a-Service
+  (MaaS) into full go-to-market orchestration spanning marketing operations, MarTech
+  management, campaign build and demand generation, content and creative production, GTM
+  engineering, and revenue strategy consulting. In June 2026 2X acquired Knownwell, an
+  AI-as-a-Service commercial-intelligence platform, in a transaction valued at more than
+  $400M; Knownwell founder David DeWolf became 2X's CEO and Colasante remained as founder.
+  2X also acquired GTM engineering firm The Kiln, a leading Clay implementation partner.
+  With more than 1,000 team members across five continents, 2X serves over 150 enterprise
+  clients including SAP, Ricoh, Docker, Seismic, Qlik, Brightcove, Emburse and GoTo, and is
+  backed by private-equity firms Recognize and Insight Partners. Its public machine-readable
+  API surface arrives through Knownwell — a documented REST API and an OAuth-protected remote
+  MCP server for client, portfolio, and account-health intelligence.
 url: https://raw.githubusercontent.com/api-evangelist/2x/refs/heads/main/apis.yml
 accessModel:
   pricing: unknown
-  onboarding: unknown
+  onboarding: contact-sales
   trial: false
   try_now: false
   public: false
-  label: Unknown
-  confidence: low
-  source: []
-  generated: '2026-07-22'
+  label: Customer-only
+  confidence: medium
+  source:
+  - https://api.knownwell.com/docs
+  - https://2x.com/contact/
+  generated: '2026-08-13'
   method: derived
-image: https://2x.marketing/wp-content/uploads/2023/11/2X-OG-banners-2.jpg
+  note: >-
+    The Knownwell API is documented publicly but issues no self-serve credentials — API keys
+    are minted through the /v1/api-keys admin operations, which themselves require an
+    existing bearer authorization. 2X publishes no pricing page and no sign-up flow.
+image: https://2x.com/wp-content/uploads/2023/11/2X-OG-banners-2.jpg
 x-type: company
 x-source: vc-portfolio
 x-backed-by:
 - insight-partners
 - recognize
-x-tier: stub
-x-tier-reason: portfolio-lead
+x-acquired:
+- knownwell
+- the-kiln
+x-domain-history:
+  previous: 2x.marketing
+  current: 2x.com
+  note: >-
+    2x.marketing 301-redirects to 2x.com as of 2026-08-13; the catalog previously recorded
+    only the 2x.marketing domain.
+x-tier: profiled
+x-tier-reason: published-contract
 specificationVersion: '0.20'
 created: '2026-07-17'
-modified: '2026-07-17'
+modified: '2026-08-13'
 tags:
 - Company
 - Marketing
@@ -40,7 +62,86 @@ tags:
 - Marketing Operations
 - Consulting
 - Artificial Intelligence
-apis: []
+- Go To Market
+- Revenue Operations
+- Commercial Intelligence
+- Customer Success
+- Agentic AI
+- Demand Generation
+apis:
+- name: Knownwell Commercial Intelligence API
+  description: Read-only REST API over Knownwell's commercial-intelligence platform — the
+    AIaaS product 2X acquired in June 2026. Exposes client records and Knownwell scores,
+    portfolio health and score distribution, trending and at-risk accounts, weekly client
+    alignment, per-client history, priorities, notes and key people, revenue streams, topics,
+    and CSV export, plus administrative API-key issuance and revocation. Authenticated with
+    an X-API-Key header; every data operation is a GET.
+  humanURL: https://api.knownwell.com/docs
+  baseURL: https://api.knownwell.com/ci/v1
+  tags:
+  - Commercial Intelligence
+  - Customer Success
+  - Account Health
+  - Analytics
+  properties:
+  - type: OpenAPI
+    url: openapi/2x-knownwell-openapi.json
+  - type: Documentation
+    url: https://api.knownwell.com/docs
+  - type: APIReference
+    url: https://api.knownwell.com/docs
+  - type: Authentication
+    url: authentication/2x-authentication.yml
+  - type: RateLimits
+    url: rate-limits/2x-rate-limits.yml
+  - type: Conventions
+    url: conventions/2x-conventions.yml
+  - type: ErrorCatalog
+    url: errors/2x-problem-types.yml
+  - type: DataModel
+    url: data-model/2x-data-model.yml
+  - type: Overlay
+    url: overlays/2x-knownwell-overlay.yaml
+  - type: Conformance
+    url: conformance/2x-conformance.yml
+- name: Knownwell MCP Server
+  description: OAuth-protected remote Model Context Protocol server for the Knownwell
+    commercial-intelligence platform. An MCP client POSTs JSON-RPC to the endpoint after
+    completing an OAuth 2.1 authorization-code + PKCE flow; the server publishes RFC 8414
+    authorization-server metadata and RFC 9728 protected-resource metadata and supports
+    dynamic client registration. The live tool list is auth-gated and was not observed.
+  humanURL: https://api.knownwell.com/docs
+  baseURL: https://mcp.knownwell.com/mcp
+  tags:
+  - MCP
+  - Agentic AI
+  - Commercial Intelligence
+  properties:
+  - type: MCPServer
+    url: mcp/2x-mcp.yml
+  - type: ToolCrosswalk
+    url: mcp/2x-tool-crosswalk.yml
+  - type: OAuthScopes
+    url: scopes/2x-scopes.yml
+  - type: Authentication
+    url: authentication/2x-authentication.yml
+- name: 2X Website WordPress REST API
+  description: The public WordPress REST API served by the 2x.com corporate website. It is
+    anonymously readable and exposes 322 routes across 13 namespaces (wp/v2, yoast/v1,
+    wp-abilities/v1, redirection/v1 and others), covering posts, pages, customer stories,
+    open roles, testimonials and media. It also carries one first-party namespace 2X built
+    itself, maturity/v1, which serves the submission records behind 2X's marketing-maturity
+    assessment. This is content infrastructure provided by the CMS, not a 2X product API —
+    recorded because it is a genuinely callable public surface on 2X's own domain.
+  humanURL: https://developer.wordpress.org/rest-api/
+  baseURL: https://2x.com/wp-json/
+  tags:
+  - Content
+  - CMS
+  - WordPress
+  properties:
+  - type: Documentation
+    url: https://developer.wordpress.org/rest-api/
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
@@ -50,21 +151,58 @@ common:
 - type: DomainSecurity
   url: security/2x-domain-security.yml
 - type: Website
-  url: https://2x.marketing/
+  url: https://2x.com/
 - type: About
-  url: https://2x.marketing/about/
+  url: https://2x.com/about/
 - type: Blog
-  url: https://2x.marketing/insights/?post-type=blog
+  url: https://2x.com/insights/
 - type: Support
-  url: https://2x.marketing/contact/
+  url: https://2x.com/contact/
 - type: Careers
-  url: https://2x.marketing/career/
+  url: https://2x.com/career/
 - type: PrivacyPolicy
-  url: https://2x.marketing/privacy-policy/
+  url: https://2x.com/privacy-policy/
 - type: LinkedIn
   url: https://www.linkedin.com/company/2xmarketing
+- type: Documentation
+  url: https://api.knownwell.com/docs
+- type: APIReference
+  url: https://api.knownwell.com/docs
+- type: StatusPage
+  url: https://api.knownwell.com/status
+- type: LLMsTxt
+  url: llms/2x-llms.txt
+- type: WellKnown
+  url: well-known/2x-well-known.yml
+- type: Lifecycle
+  url: lifecycle/2x-lifecycle.yml
+- type: Packages
+  url: packages/2x-packages.yml
+- type: Plans
+  url: plans/2x-plans-pricing.yml
+- type: AgentSkill
+  url: skills/_index.yml
 x-enrichment:
-  date: '2026-07-19'
-  status: backfilled
+  date: '2026-08-13'
+  status: enriched
+  artifacts_added: 23
   pass: local-v1
-  note: backfilled from .gitignore signal + verified work evidence
+x-coverage:
+  state: covered
+  reason: published-contract
+  detail: >-
+    2X now has a real machine-readable contract through its June 2026 acquisition of
+    Knownwell — an anonymously-readable OpenAPI 3.1.0 with 27 operations at
+    api.knownwell.com/openapi.json plus an OAuth-protected remote MCP server at
+    mcp.knownwell.com/mcp. The prior profile was a stub because the catalog held only the
+    superseded 2x.marketing domain and had never probed the acquired hosts.
+  evidence:
+  - url: https://api.knownwell.com/openapi.json
+    status: 200
+  - url: https://mcp.knownwell.com/mcp
+    status: 401
+  - url: https://2x.com/llms.txt
+    status: 200
+  - url: https://2x.marketing/
+    status: 301
+  checked: '2026-08-13'
