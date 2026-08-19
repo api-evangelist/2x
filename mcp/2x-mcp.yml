@@ -1,0 +1,58 @@
+generated: '2026-08-13'
+method: probed
+status: published
+source: https://mcp.knownwell.com/mcp
+ownership: >-
+  This MCP server is served from knownwell.com, not 2x.com. 2X acquired Knownwell on
+  2026-06-10 for more than $400M and Knownwell founder David DeWolf became 2X's CEO,
+  announced by 2X on its own site at https://2x.com/press-release/2x-acquires-knownwell/,
+  so the Knownwell hosts are 2X-operated API surfaces.
+deployment:
+  mode: remote
+  endpoint: https://mcp.knownwell.com/mcp
+  auth: oauth
+  verified: probed
+server:
+  name: knownwell
+  transport: http
+  url: https://mcp.knownwell.com/mcp
+  hosting: Google Cloud (server header "Google Frontend", x-cloud-trace-context present)
+authorization:
+  model: OAuth 2.1 authorization-code + PKCE
+  protected_resource_metadata: https://mcp.knownwell.com/.well-known/oauth-protected-resource/mcp
+  authorization_server: https://mcp.knownwell.com/
+  authorization_endpoint: https://mcp.knownwell.com/authorize
+  token_endpoint: https://mcp.knownwell.com/token
+  registration_endpoint: https://mcp.knownwell.com/register
+  revocation_endpoint: https://mcp.knownwell.com/revoke
+  dynamic_client_registration: true
+  pkce: [S256]
+  grant_types: [authorization_code, refresh_token]
+  scopes: [knownwell.read]
+  bearer_methods: [header]
+tools:
+  status: gated
+  note: >-
+    tools/list is auth-gated. An unauthenticated JSON-RPC POST returns HTTP 401 with
+    WWW-Authenticate: Bearer error="invalid_token", pointing at the protected-resource
+    metadata. The live tool set and its per-tool inputSchema therefore require an
+    authenticated introspection pass and are NOT recorded here. No tool list is asserted,
+    because none was observed — see mcp/2x-tool-crosswalk.yml for the REST operations an
+    agent can reach today via the documented API.
+  discovered: []
+x-evidence:
+  fetched: '2026-08-13'
+  probes:
+  - url: https://mcp.knownwell.com/mcp
+    method: POST
+    body: '{"jsonrpc":"2.0","id":1,"method":"tools/list"}'
+    status: 401
+    www_authenticate: >-
+      Bearer error="invalid_token", error_description="Authentication required",
+      resource_metadata="https://mcp.knownwell.com/.well-known/oauth-protected-resource/mcp"
+  - url: https://mcp.knownwell.com/.well-known/oauth-authorization-server
+    status: 200
+  - url: https://mcp.knownwell.com/.well-known/oauth-protected-resource/mcp
+    status: 200
+  - url: https://mcp.knownwell.com/
+    status: 404

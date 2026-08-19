@@ -1,0 +1,43 @@
+generated: '2026-08-13'
+method: searched
+source: https://2x.com/
+note: >-
+  2X publishes no pricing page and no plans of any kind. It sells subscription-based B2B
+  go-to-market services through a sales motion — the homepage and every service page route to
+  a contact form rather than to a price, a tier table or a sign-up. The 51 pages exposed by
+  the site's own WordPress REST API include no `pricing` or `plans` slug. The acquired
+  Knownwell API likewise publishes no pricing and issues no self-serve credentials. This is a
+  recorded absence, not an unchecked field.
+plan_count: 0
+plans: []
+pricing_model:
+  type: contact-sales
+  subscription: true
+  self_serve: false
+  free_tier: false
+  trial: false
+  published_prices: false
+  note: >-
+    2X's own positioning is a subscription alternative to agency retainers, so a
+    subscription model genuinely exists — but no price, quota, or tier is published to the
+    public web.
+api_pricing:
+  published: false
+  metered: false
+  note: >-
+    The Knownwell API documents rate limits (100/min, 5000/hr, 50000/day) but attaches no
+    price or plan to them. Limits appear to be a service-protection ceiling rather than a
+    billable quota. Access requires an API key that cannot be self-provisioned.
+sales_contact: https://2x.com/contact/
+x-evidence:
+  fetched: '2026-08-13'
+  probes:
+  - url: https://2x.com/
+    status: 200
+    result: no pricing link in navigation or footer
+  - url: https://2x.com/wp-json/wp/v2/pages?per_page=100
+    status: 200
+    result: 51 pages enumerated; no pricing or plans page
+  - url: https://api.knownwell.com/docs
+    status: 200
+    result: no pricing section

@@ -1,0 +1,74 @@
+generated: '2026-08-13'
+method: searched
+source: https://api.knownwell.com/docs
+note: >-
+  Lifecycle posture for the Knownwell API surface 2X acquired in June 2026. A real hosted
+  status page exists; a versioning scheme exists; a deprecation policy does NOT. The company
+  is also mid-rebrand at the domain level (2x.marketing -> 2x.com), which is recorded here
+  because it is the single most consequential lifecycle event on this provider's public
+  surface this year.
+versioning:
+  scheme: uri-path
+  current: v1
+  docs: https://api.knownwell.com/docs
+  note: >-
+    Version appears in the path as /ci/v1. The same operations are also mounted at /v1
+    (both return 401 rather than 404 when unauthenticated, confirming both mounts are live),
+    and the OpenAPI declares the /v1 form while the docs publish /ci/v1 as the base URL.
+    Two working mounts for one version with no statement about which is canonical is a real
+    ambiguity a client has to resolve by choosing.
+  no_version_header: true
+deprecation:
+  policy_url: null
+  policy_published: false
+  sunset_header: false
+  deprecation_header: false
+  note: >-
+    No deprecation or sunset policy is published anywhere on the API docs, and no operation
+    in the OpenAPI carries deprecated: true. No Deprecation pointer is emitted.
+deprecated_operations: []
+sla:
+  url: null
+  uptime_target: null
+  published: false
+status_page:
+  url: https://api.knownwell.com/status
+  resolves_to: https://stats.uptimerobot.com/queEz4Xez6
+  provider: UptimeRobot
+  title: Knownwell Platform Status
+  method: probed
+  http_status: 200
+  note: >-
+    api.knownwell.com/status 307-redirects to a hosted UptimeRobot status page titled
+    "Knownwell Platform Status". The vanity URL on the provider's own host is recorded as
+    the canonical pointer.
+changelog:
+  url: null
+  published: false
+  detail: changelog/2x-changelog.yml
+domain_lifecycle:
+  previous_domain: 2x.marketing
+  current_domain: 2x.com
+  status: 301
+  observed: '2026-08-13'
+  note: >-
+    Every path on 2x.marketing 301-redirects to the same path on 2x.com. The redirect is
+    clean and preserves paths, so no link rot — but the catalog had only the old domain.
+corporate_events:
+- date: '2026-06-10'
+  event: 2X acquired Knownwell (>$400M); Knownwell founder David DeWolf became 2X CEO
+  source: https://2x.com/press-release/2x-acquires-knownwell/
+- date: null
+  event: 2X acquired The Kiln, a GTM engineering firm and Clay implementation partner
+  source: https://2x.com/in-the-media/2x-acquires-gtm-engineering-specialist-the-kiln-to-deliver-end-to-end-go-to-market-orchestration/
+x-evidence:
+  fetched: '2026-08-13'
+  probes:
+  - url: https://api.knownwell.com/status
+    status: 200
+  - url: https://api.knownwell.com/ci/v1/clients
+    status: 401
+  - url: https://api.knownwell.com/v1/clients
+    status: 401
+  - url: https://2x.marketing/
+    status: 301

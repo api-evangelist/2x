@@ -1,0 +1,74 @@
+generated: '2026-08-13'
+method: searched
+source: >-
+  Registry lookups against npm, PyPI and the Knownwell API documentation on 2026-08-13.
+note: >-
+  No first-party client library exists for either 2X or Knownwell. The API documentation at
+  https://api.knownwell.com/docs shows raw HTTP/curl usage only and links no SDK. Because
+  there is no official SDK, NO `SDKs` pointer is emitted for this provider — the Packages
+  pointer records a verified absence, not a shipped library.
+package_count: 0
+official_package_count: 0
+packages: []
+registries_checked:
+- registry: npm
+  queries:
+  - name: knownwell
+    status: 404
+    version: null
+  - name: '@knownwell/sdk'
+    status: 404
+    version: null
+  - name: 2x-marketing
+    status: 404
+    version: null
+  search:
+    endpoint: https://registry.npmjs.org/-/v1/search?text=knownwell
+    total_results: 0
+- registry: pypi
+  queries:
+  - name: knownwell
+    status: 404
+    version: null
+  - name: knownwell-sdk
+    status: 404
+    version: null
+- registry: docs
+  source: https://api.knownwell.com/docs
+  result: no SDK or client-library links published; examples are raw HTTP
+source_code:
+  github_organization: null
+  note: >-
+    Two name-matching GitHub organizations exist but NEITHER carries metadata tying it to
+    this company, so no GitHubOrganization pointer is emitted. github.com/2X-Marketing has 0
+    public repos and no name, blog, description or location set — an empty shell that could
+    belong to anyone. github.com/knownwell-ai sets name "Knownwell" and location "United
+    States of America" but publishes no homepage or profile README, and its only substantive
+    repo is a fork of z3z1ma/target-bigquery (a Singer BigQuery target) with no Knownwell
+    code in it. Name resemblance is not ownership evidence; recorded here so a later round
+    does not re-derive it as a find.
+  candidates:
+  - url: https://github.com/2X-Marketing
+    status: 200
+    public_repos: 0
+    confirmed: false
+  - url: https://github.com/knownwell-ai
+    status: 200
+    public_repos: 2
+    confirmed: false
+distribution:
+  cdn: false
+  note: >-
+    No CDN-distributed browser build either — 2X ships no embeddable client. The only
+    JavaScript on 2x.com is WordPress theme and plugin code, which is not a client library
+    for any 2X API.
+x-evidence:
+  fetched: '2026-08-13'
+  probes:
+  - url: https://registry.npmjs.org/knownwell
+    status: 404
+  - url: https://pypi.org/pypi/knownwell/json
+    status: 404
+  - url: https://registry.npmjs.org/-/v1/search?text=knownwell
+    status: 200
+    result: 0 packages

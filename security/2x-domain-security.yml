@@ -1,17 +1,33 @@
-generated: '2026-07-17'
+generated: '2026-08-13'
 method: probed
 source: live DNS/TLS/HTTP probes of apis.yml + OpenAPI hosts
 hosts:
-- host: 2x.marketing
+- host: 2x.com
   https: true
   tls_version: TLSv1.3
-  cert_expires: Oct  1 07:45:38 2026 GMT
+  cert_expires: Oct  1 04:35:42 2026 GMT
   hsts: true
   hsts_max_age: 31536000
+- host: api.knownwell.com
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Oct 22 16:33:25 2026 GMT
+  hsts: null
+- host: mcp.knownwell.com
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Sep 23 22:54:27 2026 GMT
+  hsts: null
 domains:
-- domain: 2x.marketing
+- domain: 2x.com
   dnssec: false
   caa: []
   spf: true
   dmarc: true
   dmarc_policy: quarantine
+- domain: knownwell.com
+  dnssec: false
+  caa: []
+  spf: true
+  dmarc: true
+  dmarc_policy: reject

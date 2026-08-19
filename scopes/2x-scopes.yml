@@ -1,0 +1,39 @@
+generated: '2026-08-13'
+method: probed
+source: https://mcp.knownwell.com/.well-known/oauth-authorization-server
+note: >-
+  The OpenAPI for the Knownwell REST API declares no oauth2 security scheme, so
+  derive-oauth-scopes.py found nothing there. The OAuth surface belongs to the remote MCP
+  server on mcp.knownwell.com, whose RFC 8414 authorization-server metadata publishes the
+  scope list below. Recorded from that live document, not from the spec. 2X publishes no
+  human-readable scopes reference page, so the descriptions are the plain reading of the
+  scope name and are marked as such.
+schemes:
+- name: KnownwellMCPOAuth
+  source: well-known/2x-oauth-authorization-server.json
+  issuer: https://mcp.knownwell.com/
+  protected_resource: https://mcp.knownwell.com/mcp
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://mcp.knownwell.com/authorize
+    tokenUrl: https://mcp.knownwell.com/token
+    pkce: S256
+scopes:
+- scope: knownwell.read
+  description: >-
+    Read access to Knownwell commercial-intelligence data. The only scope the authorization
+    server advertises; description inferred from the scope name because no scopes reference
+    page is published.
+  description_source: inferred-from-name
+  flows: [authorizationCode]
+  sources: [well-known/2x-oauth-authorization-server.json]
+summary:
+  scope_count: 1
+  write_scopes: 0
+  note: >-
+    A single read-only scope, consistent with the REST API being entirely GET operations
+    apart from API-key administration.
+x-evidence:
+  fetched: '2026-08-13'
+  url: https://mcp.knownwell.com/.well-known/oauth-authorization-server
+  http_status: 200

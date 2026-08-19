@@ -1,0 +1,78 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for the Knownwell Commercial Intelligence API
+  version: 1.0.0
+extends: openapi/2x-knownwell-openapi.json
+x-generated: '2026-08-13'
+x-method: generated
+x-source: >-
+  Authored from https://api.knownwell.com/openapi.json plus the human documentation at
+  https://api.knownwell.com/docs and live probes on 2026-08-13. The harvested spec is never
+  mutated; every enhancement below is expressed as an overlay action.
+actions:
+- target: $.info
+  update:
+    x-apievangelist-provider: 2x
+    x-apievangelist-harvested: '2026-08-13'
+    x-apievangelist-ownership: >-
+      Served from api.knownwell.com. 2X acquired Knownwell on 2026-06-10 for more than $400M
+      and Knownwell founder David DeWolf became 2X's CEO, so this is a 2X-operated API.
+    x-apievangelist-note: >-
+      FastAPI-generated document. operationIds are auto-generated method+path manglings, not
+      curated names.
+- target: $
+  update:
+    servers:
+    - url: https://api.knownwell.com/ci/v1
+      description: >-
+        Base URL published in the human documentation. NOTE the harvested document declares
+        no servers[] at all and its paths are written with a /v1 prefix, so a client
+        generated straight from the spec will target /v1 rather than /ci/v1. Both mounts
+        answer live.
+    - url: https://api.knownwell.com/v1
+      description: Alternate live mount matching the paths as written in the spec.
+- target: $.info
+  update:
+    x-apievangelist-rate-limits:
+      per_minute: 100
+      per_hour: 5000
+      per_day: 50000
+      headers: [X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset]
+      exhaustion_status: 429
+      source: https://api.knownwell.com/docs
+- target: $.info
+  update:
+    x-apievangelist-undeclared-responses:
+      note: >-
+        The documentation publishes 400, 401, 403, 429 and 500 for every operation, but the
+        spec declares only 200/201/204 and 422. A generated client will not model the auth
+        or rate-limit failure paths.
+      envelope:
+        fields: [error, detail, status_code]
+      observed:
+      - status: 401
+        body: '{"detail":"API key is required. Provide it in the X-API-Key header."}'
+- target: $.info
+  update:
+    x-apievangelist-pagination:
+      style: limit-offset
+      limit_default: 100
+      limit_max: 500
+      offset_default: 0
+      response_total_field: total
+      cursor: false
+      link_header: false
+- target: $.info
+  update:
+    x-apievangelist-agent-surface:
+      mcp_server: https://mcp.knownwell.com/mcp
+      mcp_auth: OAuth 2.1 authorization_code + PKCE, scope knownwell.read
+      tools_list_gated: true
+      crosswalk: mcp/2x-tool-crosswalk.yml
+- target: $.info
+  update:
+    x-apievangelist-mutability:
+      read_only_data_surface: true
+      note: >-
+        24 of 27 operations are GET. The only writes create or revoke API keys, so an agent
+        holding a data key cannot mutate commercial-intelligence state.

@@ -1,0 +1,82 @@
+generated: '2026-08-13'
+method: searched
+source: https://api.knownwell.com/docs
+derived_from: openapi/2x-knownwell-openapi.json
+format: custom-json
+rfc9457: false
+note: >-
+  Two distinct error shapes coexist. The OpenAPI only declares 422 (FastAPI's
+  HTTPValidationError) on every operation; the human docs additionally publish a flat
+  {error, detail, status_code} envelope and the full status-code table. Neither uses
+  application/problem+json, so this is not an RFC 9457 API. The 401 body below was observed
+  live rather than read from either source.
+envelopes:
+- name: standard
+  fields: [error, detail, status_code]
+  content_type: application/json
+  source: docs
+- name: validation
+  schema: HTTPValidationError
+  fields: [detail]
+  detail_item_fields: [loc, msg, type, input, ctx]
+  content_type: application/json
+  source: openapi/2x-knownwell-openapi.json
+  note: only error response declared in the spec; attached to 24 of 27 operations
+problems:
+- status: 400
+  title: Bad Request
+  meaning: malformed request
+  source: docs
+- status: 401
+  title: Unauthorized
+  meaning: missing or invalid API key
+  observed_body: '{"detail":"API key is required. Provide it in the X-API-Key header."}'
+  remediation: send a valid key in the X-API-Key header
+  source: probed
+  evidence:
+    url: https://api.knownwell.com/v1/clients
+    http_status: 401
+    fetched: '2026-08-13'
+- status: 403
+  title: Forbidden
+  meaning: key is valid but not permitted for this resource
+  remediation: check the key's scope; see authentication/2x-authentication.yml
+  source: docs
+- status: 404
+  title: Not Found
+  meaning: resource does not exist
+  observed_body: '{"detail":"Not Found"}'
+  source: probed
+  evidence:
+    url: https://api.knownwell.com/api-docs
+    http_status: 404
+    fetched: '2026-08-13'
+- status: 422
+  title: Validation Error
+  meaning: request parameters failed validation
+  schema: HTTPValidationError
+  envelope: validation
+  source: openapi/2x-knownwell-openapi.json
+  applies_to_operations: 24
+- status: 429
+  title: Too Many Requests
+  meaning: rate limit exceeded
+  remediation: back off until X-RateLimit-Reset; see rate-limits/2x-rate-limits.yml
+  source: docs
+- status: 500
+  title: Internal Server Error
+  meaning: server-side failure
+  source: docs
+gaps:
+- >-
+  The spec declares no 401/403/429/500 responses on any operation even though the docs
+  document all four, so a generated client will not model the auth or rate-limit failure
+  paths.
+- >-
+  No machine-readable error-code registry — errors are distinguished only by HTTP status and
+  a prose `detail` string, so an agent cannot branch on a stable code.
+summary:
+  problem_count: 7
+  documented_in_spec: 1
+  documented_in_docs_only: 6
+  observed_live: 2

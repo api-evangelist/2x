@@ -1,0 +1,156 @@
+generated: '2026-08-13'
+method: derived
+source: openapi/2x-knownwell-openapi.json
+note: >-
+  Entity-relationship graph derived from the 26 component schemas and the id-reference fields
+  in the Knownwell Commercial Intelligence API. Every entity is tenant-scoped by customerId,
+  which is the root of the whole model — it appears on every response envelope, not just on
+  records, so a caller's key implicitly selects the tenant.
+tenancy:
+  root_field: customerId
+  note: >-
+    customerId is present on ClientResponse, StreamResponse, PortfolioResponse,
+    PortfolioHealthResponse and on every list envelope. It is never a request parameter,
+    which means the API key determines the tenant and a client cannot address another
+    tenant's data.
+entities:
+- name: Client
+  schemas: [ClientResponse, ClientDetailResponse]
+  id_field: id
+  description: >-
+    An account under commercial-intelligence measurement. Carries the Knownwell score, its
+    provenance (scoreSource), 7-day and 30-day score deltas, last contact date, an
+    insufficient-data flag, an archived flag and a historical score series.
+  key_fields: [id, customerId, name, score, scoreSource, scoreChanges, lastContactDate, archived, historicalData]
+  detail_only_fields: [spotlightSummary, topics]
+- name: ClientMetadata
+  schemas: [ClientMetadata]
+  description: >-
+    Firmographic and commercial attributes attached to a client — account owner, industry,
+    location, domain, client type, account status, annual revenue, trailing-twelve-month and
+    forward-twelve-month revenue.
+  embedded_in: Client
+- name: Stream
+  schemas: [StreamResponse, StreamDetailResponse]
+  id_field: id
+  description: >-
+    A revenue or engagement stream belonging to a client — separately scored, with its own
+    state, goals and history. The detail form adds narrative AI output (spotlight, insights,
+    contextualClues, growthRecommendations).
+  key_fields: [id, name, customerId, parentClientId, score, streamState, goals]
+- name: Portfolio
+  schemas: [PortfolioResponse, PortfolioDetailResponse]
+  id_field: id
+  description: >-
+    A named grouping of clients, owned by a set of users. May be system-managed (isSystem).
+    The detail form embeds its clients, its users and its aggregate health.
+  key_fields: [id, name, customerId, clientCount, userIds, isSystem]
+- name: PortfolioHealth
+  schemas: [PortfolioHealthResponse]
+  description: aggregate score with a breakdown and a distribution across risk bands
+  key_fields: [score, breakdown, distribution, customerId, chr2CutoverDate]
+- name: PortfolioUser
+  schemas: [PortfolioUser]
+  id_field: id
+  key_fields: [id, displayName, email]
+- name: Alignment
+  schemas: [AlignmentRead, ClientAlignment, ClientAlignmentResponse]
+  description: >-
+    A weekly per-client alignment value with an audit trail (updatedAt, updatedBy). Addressed
+    by ISO week rather than by id.
+  key_fields: [value, week, updatedAt, updatedBy]
+- name: ScoreChange
+  schemas: [ScoreChange, ScoreChanges]
+  description: score delta over a window — absolute change, percentage, and previous score
+  windows: ['7day', '30day']
+- name: Topic
+  schemas: []
+  description: >-
+    Listed by list_topics_v1_topics_get and referenced from ClientDetailResponse.topics, but
+    the spec types topics as a free-form object array with no named schema, so the topic
+    entity has no machine-readable shape.
+  note: untyped in the contract
+- name: APIKey
+  schemas: [APIKeyCreate, APIKeyResponse, APIKeyScope]
+  id_field: id
+  description: >-
+    Administrative credential record. The plaintext api_key field is populated only on
+    creation.
+  key_fields: [id, customer_id, name, scope, status, created_at, expires_at, last_used_at]
+  note: >-
+    The only snake_case entity in the model — every other schema is camelCase. Its scope
+    enum has exactly one member, read_only.
+relationships:
+- from: Client
+  to: Customer
+  type: belongs_to
+  via: customerId
+- from: Client
+  to: ClientMetadata
+  type: has_one
+  via: metadata
+- from: Client
+  to: ScoreChanges
+  type: has_one
+  via: scoreChanges
+- from: Client
+  to: Stream
+  type: has_many
+  via: parentClientId
+  operation: list_client_streams_v1_clients__client_id__streams_get
+- from: Client
+  to: Alignment
+  type: has_one_per_week
+  via: clientId + week
+  operation: get_client_alignment_v1_clients__client_id__alignment_get
+- from: Client
+  to: Topic
+  type: has_many
+  via: topics
+  note: untyped array on ClientDetailResponse
+- from: Stream
+  to: Client
+  type: belongs_to
+  via: parentClientId
+- from: Stream
+  to: ScoreChanges
+  type: has_one
+  via: scoreChanges
+- from: Portfolio
+  to: Client
+  type: has_many
+  via: clients
+  operation: get_portfolio_v1_portfolios__portfolio_id__get
+- from: Portfolio
+  to: PortfolioUser
+  type: has_many
+  via: userIds
+- from: Portfolio
+  to: PortfolioHealth
+  type: has_one
+  via: health
+- from: APIKey
+  to: Customer
+  type: belongs_to
+  via: customer_id
+enumerations:
+- name: RiskLevel
+  values: [high_risk, medium_risk, low_risk, on_track]
+  used_by: get_clients_by_risk_v1_clients_by_risk__risk_level__get
+- name: TrendDirection
+  values: [improving, declining, stable]
+  used_by: get_trending_clients_v1_clients_trending_get
+- name: APIKeyScope
+  values: [read_only]
+  used_by: create_api_key_v1_api_keys_post
+id_formats:
+  note: >-
+    All ids are plain strings with no documented prefix scheme and no format declared in the
+    spec, so id shape cannot be validated client-side. externalClientId on ClientAlignment
+    is the join key to a customer's own CRM.
+summary:
+  entities: 10
+  relationships: 12
+  enumerations: 3
+  schemas_in_spec: 26
+  untyped_entities: 1

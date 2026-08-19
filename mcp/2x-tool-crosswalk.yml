@@ -1,0 +1,78 @@
+generated: '2026-08-13'
+method: derived
+source: openapi/2x-knownwell-openapi.json + mcp/2x-mcp.yml
+note: >-
+  Emitted because 2X (via Knownwell) ships BOTH an OpenAPI 3.1.0 contract and a remote MCP
+  server. The MCP tools/list is OAuth-gated, so no tool names were observed. This crosswalk
+  therefore does NOT guess tool names — crosswalk[] is empty by design and rest_only[]
+  carries the full REST surface an agent can reach today with an X-API-Key. When an
+  authenticated tools/list becomes available, bind each tool to the operationIds below and
+  raise the rows out of rest_only[].
+surfaces:
+  openapi:
+    file: openapi/2x-knownwell-openapi.json
+    base_url: https://api.knownwell.com/ci/v1
+    alternate_mount: https://api.knownwell.com/v1
+    auth: X-API-Key header
+    gated: false
+    note: spec is anonymously readable; the operations themselves require an API key
+  mcp:
+    url: https://mcp.knownwell.com/mcp
+    auth: OAuth 2.1 (scope knownwell.read)
+    gated: true
+    note: tools/list returns 401 invalid_token without a bearer token
+  graphql:
+    present: false
+    note: /graphql returns 404 on api.knownwell.com
+crosswalk: []
+mcp_only: []
+rest_only:
+- capability: Client intelligence
+  operations:
+  - list_clients_v1_clients_get
+  - get_client_v1_clients__client_id__get
+  - search_clients_v1_clients_search_get
+  - get_client_history_v1_clients__client_id__history_get
+  - get_client_priorities_v1_clients__client_id__priorities_get
+  - get_client_notes_v1_clients__client_id__notes_get
+  - get_client_key_people_v1_clients__client_id__key_people_get
+  - export_clients_csv_v1_clients_export_csv_get
+- capability: Portfolio health and risk
+  operations:
+  - get_portfolio_health_v1_clients_portfolio_health_get
+  - get_trending_clients_v1_clients_trending_get
+  - get_clients_by_risk_v1_clients_by_risk__risk_level__get
+  - get_statistics_v1_clients_statistics_overview_get
+  - list_portfolios_v1_portfolios_get
+  - get_portfolio_v1_portfolios__portfolio_id__get
+- capability: Alignment
+  operations:
+  - list_client_alignments_v1_clients_alignment_get
+  - get_client_alignment_v1_clients__client_id__alignment_get
+- capability: Streams and topics
+  operations:
+  - list_all_streams_v1_streams_get
+  - list_client_streams_v1_clients__client_id__streams_get
+  - get_stream_v1_clients__client_id__streams__stream_id__get
+  - list_topics_v1_topics_get
+- capability: API key administration
+  operations:
+  - create_api_key_v1_api_keys_post
+  - list_api_keys_v1_api_keys_get
+  - revoke_api_key_v1_api_keys__key_id__delete
+- capability: Service metadata
+  operations:
+  - health_check_health_get
+  - status_page_status_get
+  - root__get
+  - documentation_docs_get
+coverage:
+  tools_named: 0
+  tools_bound: 0
+  mcp_only: 0
+  rest_operations_total: 27
+  rest_operations_with_tool: 0
+  note: >-
+    rest_operations_with_tool is 0 because the MCP tool list could not be observed, NOT
+    because the server exposes no tools. This is a measurement gap, not a finding about
+    the server's coverage.

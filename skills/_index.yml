@@ -1,0 +1,61 @@
+generated: '2026-08-13'
+method: generated
+source: openapi/2x-knownwell-openapi.json + conventions/2x-conventions.yml + errors/2x-problem-types.yml
+note: >-
+  Packaged Agent Skills for the Knownwell Commercial Intelligence API, the machine-readable
+  surface 2X acquired in June 2026. Every operationId referenced below was verified verbatim
+  against the harvested OpenAPI document. 2X publishes no skills or AGENTS.md of its own, so
+  these are generated, not harvested.
+skills:
+- file: 2x-assess-portfolio-health.md
+  name: Assess Knownwell portfolio health
+  api: openapi/2x-knownwell-openapi.json
+  operations:
+  - get_portfolio_health_v1_clients_portfolio_health_get
+  - get_statistics_v1_clients_statistics_overview_get
+  - get_trending_clients_v1_clients_trending_get
+  - get_clients_by_risk_v1_clients_by_risk__risk_level__get
+  - list_portfolios_v1_portfolios_get
+  - get_portfolio_v1_portfolios__portfolio_id__get
+- file: 2x-investigate-at-risk-client.md
+  name: Investigate an at-risk client in Knownwell
+  api: openapi/2x-knownwell-openapi.json
+  operations:
+  - search_clients_v1_clients_search_get
+  - list_clients_v1_clients_get
+  - get_client_v1_clients__client_id__get
+  - get_client_history_v1_clients__client_id__history_get
+  - get_client_priorities_v1_clients__client_id__priorities_get
+  - get_client_notes_v1_clients__client_id__notes_get
+  - get_client_key_people_v1_clients__client_id__key_people_get
+  - list_client_streams_v1_clients__client_id__streams_get
+- file: 2x-track-weekly-alignment.md
+  name: Track weekly client alignment in Knownwell
+  api: openapi/2x-knownwell-openapi.json
+  operations:
+  - list_client_alignments_v1_clients_alignment_get
+  - get_client_alignment_v1_clients__client_id__alignment_get
+  - list_clients_v1_clients_get
+- file: 2x-manage-api-keys.md
+  name: Manage Knownwell API keys
+  api: openapi/2x-knownwell-openapi.json
+  operations:
+  - create_api_key_v1_api_keys_post
+  - list_api_keys_v1_api_keys_get
+  - revoke_api_key_v1_api_keys__key_id__delete
+coverage:
+  skills: 4
+  operations_referenced: 20
+  operations_total: 27
+  uncovered:
+  - list_all_streams_v1_streams_get
+  - get_stream_v1_clients__client_id__streams__stream_id__get
+  - list_topics_v1_topics_get
+  - export_clients_csv_v1_clients_export_csv_get
+  - health_check_health_get
+  - status_page_status_get
+  - root__get
+  - documentation_docs_get
+  note: >-
+    Uncovered operations are either service metadata (health, status, root, docs) or
+    single-call reads that need no multi-step operating instructions.

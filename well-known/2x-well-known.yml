@@ -1,0 +1,83 @@
+generated: '2026-08-13'
+method: searched
+source: live probes of the 2X website host and the Knownwell API/MCP hosts
+note: >-
+  Probed three hosts. The corporate website (2x.com, formerly 2x.marketing) serves no
+  /.well-known/ documents at all — every path 404s, and the WordPress theme answers those
+  404s with a full HTML page rather than a bare status, so none of them is a document. The
+  real /.well-known/ surface belongs to the Knownwell MCP server at mcp.knownwell.com,
+  which publishes proper OAuth 2.0 discovery: RFC 8414 authorization-server metadata and
+  RFC 9728 protected-resource metadata. Knownwell was acquired by 2X on 2026-06-10, which
+  is why a 2X artifact records a knownwell.com host.
+hosts:
+- host: https://2x.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+    note: WordPress theme returns an HTML 404 page, not a document
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+    note: WordPress theme returns an HTML 404 page, not a document
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: https://api.knownwell.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: https://mcp.knownwell.com
+  documents:
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    file: 2x-oauth-authorization-server.json
+    spec: RFC 8414
+    note: real JSON document — issuer, authorize/token/register/revoke endpoints, PKCE S256
+  - path: /.well-known/oauth-protected-resource/mcp
+    status: 200
+    file: 2x-oauth-protected-resource.json
+    spec: RFC 9728
+    note: >-
+      advertised by the WWW-Authenticate header on an unauthenticated POST to the MCP
+      endpoint; binds the MCP resource to its authorization server
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+    note: only the /mcp-suffixed resource path is served
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/security.txt
+    status: 404
+summary:
+  hosts_probed: 3
+  paths_probed: 22
+  documents_found: 2
+  security_txt: false
+  openid_configuration: false
+  oauth_metadata: true
+  api_catalog: false
+  agent_card: false
+x-evidence:
+  fetched: '2026-08-13'
+  hits:
+  - url: https://mcp.knownwell.com/.well-known/oauth-authorization-server
+    status: 200
+    content_type: application/json
+  - url: https://mcp.knownwell.com/.well-known/oauth-protected-resource/mcp
+    status: 200
+    content_type: application/json

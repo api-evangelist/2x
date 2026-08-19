@@ -1,0 +1,55 @@
+generated: '2026-08-13'
+method: searched
+source: https://api.knownwell.com/docs
+note: >-
+  Limits published in the Knownwell API reference. The docs name three rolling windows on
+  the same key and document the three response headers the API returns, which is the runtime
+  signal an agent needs. The exhaustion status code is documented as 429 in the error table.
+  Header values were not observed on a live 200 because every data operation requires an API
+  key, so the header NAMES are searched from the docs rather than probed from a response.
+limit_count: 3
+limits:
+- scope: per-api-key
+  window: 1m
+  limit: 100
+  unit: requests
+  applies_to: https://api.knownwell.com/ci/v1
+- scope: per-api-key
+  window: 1h
+  limit: 5000
+  unit: requests
+  applies_to: https://api.knownwell.com/ci/v1
+- scope: per-api-key
+  window: 1d
+  limit: 50000
+  unit: requests
+  applies_to: https://api.knownwell.com/ci/v1
+headers:
+- name: X-RateLimit-Limit
+  meaning: ceiling for the current window
+- name: X-RateLimit-Remaining
+  meaning: requests left in the current window
+- name: X-RateLimit-Reset
+  meaning: when the current window resets
+exhaustion:
+  status: 429
+  retry_after_header: false
+  note: >-
+    The docs list 429 among the returned status codes but do not document a Retry-After
+    header; only the X-RateLimit-Reset value is published, so a client must back off from
+    the reset timestamp rather than a server-supplied delay.
+pagination_interaction:
+  note: >-
+    List endpoints cap `limit` at 500 (default 100), so a full portfolio walk is bounded by
+    the per-minute ceiling — see conventions/2x-conventions.yml.
+other_surfaces:
+- surface: https://mcp.knownwell.com/mcp
+  documented: false
+  note: no published rate limits for the MCP server
+- surface: https://2x.com/wp-json/
+  documented: false
+  note: WordPress REST API on the corporate site publishes no rate-limit policy
+x-evidence:
+  fetched: '2026-08-13'
+  url: https://api.knownwell.com/docs
+  http_status: 200
