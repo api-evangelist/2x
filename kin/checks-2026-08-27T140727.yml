@@ -3,40 +3,22 @@ kin_checks:
   slug: 2x
   schema_version: 0.15.1
   scored_at: '2026-08-27'
-  run_ts: 2026-08-27T103455
+  run_ts: 2026-08-27T140727
   note: Actionable checks only (missed + partial). earned/na are every other check
     in rubric/scoring-0.15.1.yml; counts below let you verify that.
   counts:
     total: 130
-    earned: 44
-    partial: 6
-    missed: 56
-    na: 24
+    earned: 31
+    partial: 7
+    missed: 50
+    na: 42
   checks:
   - id: apis_json_self_hosted
     status: missed
-  - id: openapi_3_2
-    status: missed
-    detail: 0 of 1 openapi documents pass
-  - id: openapi_3_0
-    status: missed
-    detail: 0 of 1 openapi documents pass
-  - id: info_complete
-    status: missed
-    detail: 0 of 1 openapi documents pass
-  - id: servers_defined
-    status: missed
-    detail: 0 of 1 openapi documents pass
   - id: servers_resolvable
     status: missed
-  - id: operations_description_coverage
-    status: missed
-    detail: 0 of 1 openapi documents pass
   - id: examples_present
     status: missed
-  - id: webhooks_or_callbacks
-    status: missed
-    detail: 0 of 1 openapi documents pass
   - id: asyncapi_present
     status: missed
   - id: json_schema_present
@@ -145,6 +127,10 @@ kin_checks:
     status: partial
     earned: 9.0
     detail: 'grade: served'
+  - id: error_semantics
+    status: partial
+    earned: 4.0
+    detail: 'grade: documented'
   - id: rate_limit_signal
     status: partial
     earned: 3.5
