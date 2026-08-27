@@ -84,47 +84,12 @@ tags_raw:
 - Agentic AI
 - Demand Generation
 apis:
-- name: Knownwell Commercial Intelligence API
-  description: Read-only REST API over Knownwell's commercial-intelligence platform — the
-    AIaaS product 2X acquired in June 2026. Exposes client records and Knownwell scores,
-    portfolio health and score distribution, trending and at-risk accounts, weekly client
-    alignment, per-client history, priorities, notes and key people, revenue streams, topics,
-    and CSV export, plus administrative API-key issuance and revocation. Authenticated with
-    an X-API-Key header; every data operation is a GET.
-  humanURL: https://api.knownwell.com/docs
-  baseURL: https://api.knownwell.com/ci/v1
-  tags:
-  - Commercial Intelligence
-  - Customer Success
-  - Account Health
-  - Analytics
-  properties:
-  - type: OpenAPI
-    url: openapi/2x-knownwell-openapi.json
-  - type: Documentation
-    url: https://api.knownwell.com/docs
-  - type: APIReference
-    url: https://api.knownwell.com/docs
-  - type: Authentication
-    url: authentication/2x-authentication.yml
-  - type: RateLimits
-    url: rate-limits/2x-rate-limits.yml
-  - type: Conventions
-    url: conventions/2x-conventions.yml
-  - type: ErrorCatalog
-    url: errors/2x-problem-types.yml
-  - type: DataModel
-    url: data-model/2x-data-model.yml
-  - type: Overlay
-    url: overlays/2x-knownwell-overlay.yaml
-  - type: Conformance
-    url: conformance/2x-conformance.yml
 - name: Knownwell MCP Server
-  description: OAuth-protected remote Model Context Protocol server for the Knownwell
-    commercial-intelligence platform. An MCP client POSTs JSON-RPC to the endpoint after
-    completing an OAuth 2.1 authorization-code + PKCE flow; the server publishes RFC 8414
-    authorization-server metadata and RFC 9728 protected-resource metadata and supports
-    dynamic client registration. The live tool list is auth-gated and was not observed.
+  description: >-
+    OAuth-protected remote Model Context Protocol server for the Knownwell commercial-intelligence platform.
+    An MCP client POSTs JSON-RPC to the endpoint after completing an OAuth 2.1 authorization-code + PKCE
+    flow; the server publishes RFC 8414 authorization-server metadata and RFC 9728 protected-resource
+    metadata and supports dynamic client registration. The live tool list is auth-gated and was not observed.
   humanURL: https://api.knownwell.com/docs
   baseURL: https://mcp.knownwell.com/mcp
   tags:
@@ -141,13 +106,13 @@ apis:
   - type: Authentication
     url: authentication/2x-authentication.yml
 - name: 2X Website WordPress REST API
-  description: The public WordPress REST API served by the 2x.com corporate website. It is
-    anonymously readable and exposes 322 routes across 13 namespaces (wp/v2, yoast/v1,
-    wp-abilities/v1, redirection/v1 and others), covering posts, pages, customer stories,
-    open roles, testimonials and media. It also carries one first-party namespace 2X built
-    itself, maturity/v1, which serves the submission records behind 2X's marketing-maturity
-    assessment. This is content infrastructure provided by the CMS, not a 2X product API —
-    recorded because it is a genuinely callable public surface on 2X's own domain.
+  description: >-
+    The public WordPress REST API served by the 2x.com corporate website. It is anonymously readable and
+    exposes 322 routes across 13 namespaces (wp/v2, yoast/v1, wp-abilities/v1, redirection/v1 and others),
+    covering posts, pages, customer stories, open roles, testimonials and media. It also carries one first-party
+    namespace 2X built itself, maturity/v1, which serves the submission records behind 2X's marketing-maturity
+    assessment. This is content infrastructure provided by the CMS, not a 2X product API — recorded because
+    it is a genuinely callable public surface on 2X's own domain.
   humanURL: https://developer.wordpress.org/rest-api/
   baseURL: https://2x.com/wp-json/
   tags:
@@ -157,12 +122,274 @@ apis:
   properties:
   - type: Documentation
     url: https://developer.wordpress.org/rest-api/
+- aid: 2x:2x-alignment-api
+  name: 2X Alignment API
+  description: The alignment API from 2X — 2 operation(s) for alignment.
+  humanURL: https://api.knownwell.com/docs
+  baseURL: https://api.knownwell.com/ci/v1
+  tags:
+  - alignment
+  properties:
+  - type: OpenAPI
+    url: openapi/2x-alignment-api-openapi.yml
+  - type: Documentation
+    url: https://api.knownwell.com/docs
+  - type: APIReference
+    url: https://api.knownwell.com/docs
+  - type: Authentication
+    url: authentication/2x-authentication.yml
+  - type: RateLimits
+    url: rate-limits/2x-rate-limits.yml
+  - type: Conventions
+    url: conventions/2x-conventions.yml
+  - type: ErrorCatalog
+    url: errors/2x-problem-types.yml
+  - type: DataModel
+    url: data-model/2x-data-model.yml
+  - type: Conformance
+    url: conformance/2x-conformance.yml
+- aid: 2x:2x-api-keys-api
+  name: 2X API Keys API
+  description: The api-keys API from 2X — 2 operation(s) for api-keys.
+  humanURL: https://api.knownwell.com/docs
+  baseURL: https://api.knownwell.com/ci/v1
+  tags:
+  - api-keys
+  properties:
+  - type: OpenAPI
+    url: openapi/2x-api-keys-api-openapi.yml
+  - type: Documentation
+    url: https://api.knownwell.com/docs
+  - type: APIReference
+    url: https://api.knownwell.com/docs
+  - type: Authentication
+    url: authentication/2x-authentication.yml
+  - type: RateLimits
+    url: rate-limits/2x-rate-limits.yml
+  - type: Conventions
+    url: conventions/2x-conventions.yml
+  - type: ErrorCatalog
+    url: errors/2x-problem-types.yml
+  - type: DataModel
+    url: data-model/2x-data-model.yml
+  - type: Conformance
+    url: conformance/2x-conformance.yml
+- aid: 2x:2x-clients-api
+  name: 2X Clients API
+  description: The clients API from 2X — 14 operation(s) for clients.
+  humanURL: https://api.knownwell.com/docs
+  baseURL: https://api.knownwell.com/ci/v1
+  tags:
+  - clients
+  properties:
+  - type: OpenAPI
+    url: openapi/2x-clients-api-openapi.yml
+  - type: Documentation
+    url: https://api.knownwell.com/docs
+  - type: APIReference
+    url: https://api.knownwell.com/docs
+  - type: Authentication
+    url: authentication/2x-authentication.yml
+  - type: RateLimits
+    url: rate-limits/2x-rate-limits.yml
+  - type: Conventions
+    url: conventions/2x-conventions.yml
+  - type: ErrorCatalog
+    url: errors/2x-problem-types.yml
+  - type: DataModel
+    url: data-model/2x-data-model.yml
+  - type: Conformance
+    url: conformance/2x-conformance.yml
+- aid: 2x:2x-documentation-api
+  name: 2X Documentation API
+  description: The documentation API from 2X — 1 operation(s) for documentation.
+  humanURL: https://api.knownwell.com/docs
+  baseURL: https://api.knownwell.com/ci/v1
+  tags:
+  - documentation
+  properties:
+  - type: OpenAPI
+    url: openapi/2x-documentation-api-openapi.yml
+  - type: Documentation
+    url: https://api.knownwell.com/docs
+  - type: APIReference
+    url: https://api.knownwell.com/docs
+  - type: Authentication
+    url: authentication/2x-authentication.yml
+  - type: RateLimits
+    url: rate-limits/2x-rate-limits.yml
+  - type: Conventions
+    url: conventions/2x-conventions.yml
+  - type: ErrorCatalog
+    url: errors/2x-problem-types.yml
+  - type: DataModel
+    url: data-model/2x-data-model.yml
+  - type: Conformance
+    url: conformance/2x-conformance.yml
+- aid: 2x:2x-health-api
+  name: 2X Health API
+  description: The health API from 2X — 1 operation(s) for health.
+  humanURL: https://api.knownwell.com/docs
+  baseURL: https://api.knownwell.com/ci/v1
+  tags:
+  - health
+  properties:
+  - type: OpenAPI
+    url: openapi/2x-health-api-openapi.yml
+  - type: Documentation
+    url: https://api.knownwell.com/docs
+  - type: APIReference
+    url: https://api.knownwell.com/docs
+  - type: Authentication
+    url: authentication/2x-authentication.yml
+  - type: RateLimits
+    url: rate-limits/2x-rate-limits.yml
+  - type: Conventions
+    url: conventions/2x-conventions.yml
+  - type: ErrorCatalog
+    url: errors/2x-problem-types.yml
+  - type: DataModel
+    url: data-model/2x-data-model.yml
+  - type: Conformance
+    url: conformance/2x-conformance.yml
+- aid: 2x:2x-portfolios-api
+  name: 2X Portfolios API
+  description: The portfolios API from 2X — 2 operation(s) for portfolios.
+  humanURL: https://api.knownwell.com/docs
+  baseURL: https://api.knownwell.com/ci/v1
+  tags:
+  - portfolios
+  properties:
+  - type: OpenAPI
+    url: openapi/2x-portfolios-api-openapi.yml
+  - type: Documentation
+    url: https://api.knownwell.com/docs
+  - type: APIReference
+    url: https://api.knownwell.com/docs
+  - type: Authentication
+    url: authentication/2x-authentication.yml
+  - type: RateLimits
+    url: rate-limits/2x-rate-limits.yml
+  - type: Conventions
+    url: conventions/2x-conventions.yml
+  - type: ErrorCatalog
+    url: errors/2x-problem-types.yml
+  - type: DataModel
+    url: data-model/2x-data-model.yml
+  - type: Conformance
+    url: conformance/2x-conformance.yml
+- aid: 2x:2x-root-api
+  name: 2X Root API
+  description: The root API from 2X — 1 operation(s) for root.
+  humanURL: https://api.knownwell.com/docs
+  baseURL: https://api.knownwell.com/ci/v1
+  tags:
+  - root
+  properties:
+  - type: OpenAPI
+    url: openapi/2x-root-api-openapi.yml
+  - type: Documentation
+    url: https://api.knownwell.com/docs
+  - type: APIReference
+    url: https://api.knownwell.com/docs
+  - type: Authentication
+    url: authentication/2x-authentication.yml
+  - type: RateLimits
+    url: rate-limits/2x-rate-limits.yml
+  - type: Conventions
+    url: conventions/2x-conventions.yml
+  - type: ErrorCatalog
+    url: errors/2x-problem-types.yml
+  - type: DataModel
+    url: data-model/2x-data-model.yml
+  - type: Conformance
+    url: conformance/2x-conformance.yml
+- aid: 2x:2x-status-api
+  name: 2X Status API
+  description: The status API from 2X — 1 operation(s) for status.
+  humanURL: https://api.knownwell.com/docs
+  baseURL: https://api.knownwell.com/ci/v1
+  tags:
+  - status
+  properties:
+  - type: OpenAPI
+    url: openapi/2x-status-api-openapi.yml
+  - type: Documentation
+    url: https://api.knownwell.com/docs
+  - type: APIReference
+    url: https://api.knownwell.com/docs
+  - type: Authentication
+    url: authentication/2x-authentication.yml
+  - type: RateLimits
+    url: rate-limits/2x-rate-limits.yml
+  - type: Conventions
+    url: conventions/2x-conventions.yml
+  - type: ErrorCatalog
+    url: errors/2x-problem-types.yml
+  - type: DataModel
+    url: data-model/2x-data-model.yml
+  - type: Conformance
+    url: conformance/2x-conformance.yml
+- aid: 2x:2x-streams-api
+  name: 2X Streams API
+  description: The streams API from 2X — 1 operation(s) for streams.
+  humanURL: https://api.knownwell.com/docs
+  baseURL: https://api.knownwell.com/ci/v1
+  tags:
+  - streams
+  properties:
+  - type: OpenAPI
+    url: openapi/2x-streams-api-openapi.yml
+  - type: Documentation
+    url: https://api.knownwell.com/docs
+  - type: APIReference
+    url: https://api.knownwell.com/docs
+  - type: Authentication
+    url: authentication/2x-authentication.yml
+  - type: RateLimits
+    url: rate-limits/2x-rate-limits.yml
+  - type: Conventions
+    url: conventions/2x-conventions.yml
+  - type: ErrorCatalog
+    url: errors/2x-problem-types.yml
+  - type: DataModel
+    url: data-model/2x-data-model.yml
+  - type: Conformance
+    url: conformance/2x-conformance.yml
+- aid: 2x:2x-topics-api
+  name: 2X Topics API
+  description: The topics API from 2X — 1 operation(s) for topics.
+  humanURL: https://api.knownwell.com/docs
+  baseURL: https://api.knownwell.com/ci/v1
+  tags:
+  - topics
+  properties:
+  - type: OpenAPI
+    url: openapi/2x-topics-api-openapi.yml
+  - type: Documentation
+    url: https://api.knownwell.com/docs
+  - type: APIReference
+    url: https://api.knownwell.com/docs
+  - type: Authentication
+    url: authentication/2x-authentication.yml
+  - type: RateLimits
+    url: rate-limits/2x-rate-limits.yml
+  - type: Conventions
+    url: conventions/2x-conventions.yml
+  - type: ErrorCatalog
+    url: errors/2x-problem-types.yml
+  - type: DataModel
+    url: data-model/2x-data-model.yml
+  - type: Conformance
+    url: conformance/2x-conformance.yml
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: Overlay
+  url: overlays/2x-knownwell-overlay.yaml
 - type: DomainSecurity
   url: security/2x-domain-security.yml
 - type: Website
