@@ -1,0 +1,27 @@
+openapi: 3.2.0
+info:
+  title: Knownwell Root API
+  description: API for accessing Knownwell client data and Knownwell scores
+  version: v1
+tags:
+- name: root
+paths:
+  /:
+    get:
+      tags:
+      - root
+      summary: Root
+      description: Root endpoint - redirects to documentation
+      operationId: root__get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+components:
+  securitySchemes:
+    APIKeyHeader:
+      type: apiKey
+      in: header
+      name: X-API-Key

@@ -1,0 +1,27 @@
+openapi: 3.2.0
+info:
+  title: Knownwell Health API
+  description: API for accessing Knownwell client data and Knownwell scores
+  version: v1
+tags:
+- name: health
+paths:
+  /health:
+    get:
+      tags:
+      - health
+      summary: Health Check
+      description: Health check endpoint.
+      operationId: health_check_health_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+components:
+  securitySchemes:
+    APIKeyHeader:
+      type: apiKey
+      in: header
+      name: X-API-Key

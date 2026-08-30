@@ -1,0 +1,214 @@
+openapi: 3.2.0
+info:
+  title: Knownwell Streams API
+  description: API for accessing Knownwell client data and Knownwell scores
+  version: v1
+tags:
+- name: streams
+paths:
+  /v1/streams:
+    get:
+      tags:
+      - streams
+      summary: List All Streams
+      operationId: list_all_streams_v1_streams_get
+      security:
+      - APIKeyHeader: []
+      parameters:
+      - name: include_inactive
+        in: query
+        required: false
+        schema:
+          type: boolean
+          default: false
+          title: Include Inactive
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 500
+          minimum: 1
+          default: 100
+          title: Limit
+      - name: offset
+        in: query
+        required: false
+        schema:
+          type: integer
+          minimum: 0
+          default: 0
+          title: Offset
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AllStreamsListResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    AllStreamsListResponse:
+      properties:
+        streams:
+          items:
+            $ref: '#/components/schemas/StreamResponse'
+          type: array
+          title: Streams
+        total:
+          type: integer
+          title: Total
+        customerId:
+          type: string
+          title: Customerid
+      type: object
+      required:
+      - streams
+      - total
+      - customerId
+      title: AllStreamsListResponse
+      description: Response model for listing all streams across all clients.
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    StreamResponse:
+      properties:
+        id:
+          type: string
+          title: Id
+        name:
+          type: string
+          title: Name
+        customerId:
+          type: string
+          title: Customerid
+        parentClientId:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Parentclientid
+        parentClientName:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Parentclientname
+        score:
+          type: number
+          title: Score
+        streamState:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Streamstate
+          description: 'Stream status: pending, active, or inactive'
+        goals:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Goals
+          description: Stream goals/objectives
+        hasInsufficientData:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Hasinsufficientdata
+        historicalData:
+          anyOf:
+          - items:
+              type: integer
+            type: array
+          - type: 'null'
+          title: Historicaldata
+        scoreChanges:
+          anyOf:
+          - $ref: '#/components/schemas/ScoreChanges'
+          - type: 'null'
+          description: Score changes over time
+      type: object
+      required:
+      - id
+      - name
+      - customerId
+      - score
+      title: StreamResponse
+      description: Response model for a stream (sub-project within a client)
+    ScoreChange:
+      properties:
+        change:
+          type: number
+          title: Change
+          description: Absolute change in score
+        percentage:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Percentage
+          description: Percentage change
+        previousScore:
+          type: number
+          title: Previousscore
+          description: Score at start of period
+      type: object
+      required:
+      - change
+      - previousScore
+      title: ScoreChange
+      description: Score change over a time period.
+    ScoreChanges:
+      properties:
+        7day:
+          anyOf:
+          - $ref: '#/components/schemas/ScoreChange'
+          - type: 'null'
+          description: 7-day change
+        30day:
+          anyOf:
+          - $ref: '#/components/schemas/ScoreChange'
+          - type: 'null'
+          description: 30-day change
+      type: object
+      title: ScoreChanges
+      description: Score changes over different time periods.
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+  securitySchemes:
+    APIKeyHeader:
+      type: apiKey
+      in: header
+      name: X-API-Key

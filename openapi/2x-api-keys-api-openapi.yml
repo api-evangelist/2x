@@ -1,0 +1,249 @@
+openapi: 3.2.0
+info:
+  title: Knownwell API Keys API
+  description: API for accessing Knownwell client data and Knownwell scores
+  version: v1
+tags:
+- name: api-keys
+paths:
+  /v1/api-keys:
+    post:
+      tags:
+      - api-keys
+      summary: Create Api Key
+      description: Create a new API key.
+      operationId: create_api_key_v1_api_keys_post
+      parameters:
+      - name: authorization
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/APIKeyCreate'
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIKeyResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    get:
+      tags:
+      - api-keys
+      summary: List Api Keys
+      description: List all API keys.
+      operationId: list_api_keys_v1_api_keys_get
+      parameters:
+      - name: customer_id
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Customer Id
+      - name: authorization
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/APIKeyResponse'
+                title: Response List Api Keys V1 Api Keys Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v1/api-keys/{key_id}:
+    delete:
+      tags:
+      - api-keys
+      summary: Revoke Api Key
+      description: Revoke an API key.
+      operationId: revoke_api_key_v1_api_keys__key_id__delete
+      parameters:
+      - name: key_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Key Id
+      - name: authorization
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
+      responses:
+        '204':
+          description: Successful Response
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    APIKeyCreate:
+      properties:
+        customer_id:
+          type: string
+          title: Customer Id
+          description: Customer ID the key is scoped to
+        name:
+          type: string
+          title: Name
+          description: Friendly name for the API key
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+          description: Optional description
+        scope:
+          $ref: '#/components/schemas/APIKeyScope'
+          description: Access scope
+          default: read_only
+        expires_days:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Expires Days
+          description: Number of days until expiration (None = no expiration)
+      type: object
+      required:
+      - customer_id
+      - name
+      title: APIKeyCreate
+      description: Request model for creating an API key.
+    APIKeyResponse:
+      properties:
+        id:
+          type: string
+          title: Id
+        customer_id:
+          type: string
+          title: Customer Id
+        name:
+          type: string
+          title: Name
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+        scope:
+          type: string
+          title: Scope
+        status:
+          type: string
+          title: Status
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        expires_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Expires At
+        last_used_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Last Used At
+        api_key:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Api Key
+      type: object
+      required:
+      - id
+      - customer_id
+      - name
+      - description
+      - scope
+      - status
+      - created_at
+      - expires_at
+      - last_used_at
+      title: APIKeyResponse
+      description: Response model for API key.
+    APIKeyScope:
+      type: string
+      enum:
+      - read_only
+      title: APIKeyScope
+      description: API key access scope - ALL KEYS ARE READ-ONLY
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+  securitySchemes:
+    APIKeyHeader:
+      type: apiKey
+      in: header
+      name: X-API-Key

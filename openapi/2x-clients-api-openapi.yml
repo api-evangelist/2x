@@ -1,0 +1,1077 @@
+openapi: 3.2.0
+info:
+  title: Knownwell Clients API
+  description: API for accessing Knownwell client data and Knownwell scores
+  version: v1
+tags:
+- name: clients
+paths:
+  /v1/clients:
+    get:
+      tags:
+      - clients
+      summary: List Clients
+      operationId: list_clients_v1_clients_get
+      security:
+      - APIKeyHeader: []
+      parameters:
+      - name: include_archived
+        in: query
+        required: false
+        schema:
+          type: boolean
+          default: false
+          title: Include Archived
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 500
+          minimum: 1
+          default: 100
+          title: Limit
+      - name: offset
+        in: query
+        required: false
+        schema:
+          type: integer
+          minimum: 0
+          default: 0
+          title: Offset
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientListResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v1/clients/portfolio-health:
+    get:
+      tags:
+      - clients
+      summary: Get Portfolio Health
+      operationId: get_portfolio_health_v1_clients_portfolio_health_get
+      security:
+      - APIKeyHeader: []
+      parameters:
+      - name: include_archived
+        in: query
+        required: false
+        schema:
+          type: boolean
+          default: false
+          title: Include Archived
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PortfolioHealthResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v1/clients/trending:
+    get:
+      tags:
+      - clients
+      summary: Get Trending Clients
+      operationId: get_trending_clients_v1_clients_trending_get
+      security:
+      - APIKeyHeader: []
+      parameters:
+      - name: direction
+        in: query
+        required: false
+        schema:
+          $ref: '#/components/schemas/TrendDirection'
+          default: declining
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 100
+          minimum: 1
+          default: 20
+          title: Limit
+      - name: include_archived
+        in: query
+        required: false
+        schema:
+          type: boolean
+          default: false
+          title: Include Archived
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v1/clients/search:
+    get:
+      tags:
+      - clients
+      summary: Search Clients
+      operationId: search_clients_v1_clients_search_get
+      security:
+      - APIKeyHeader: []
+      parameters:
+      - name: query
+        in: query
+        required: true
+        schema:
+          type: string
+          minLength: 1
+          title: Query
+      - name: fields
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+          default:
+          - name
+          - industry
+          - accountOwner
+          title: Fields
+      - name: include_archived
+        in: query
+        required: false
+        schema:
+          type: boolean
+          default: false
+          title: Include Archived
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 200
+          minimum: 1
+          default: 50
+          title: Limit
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v1/clients/statistics/overview:
+    get:
+      tags:
+      - clients
+      summary: Get Statistics
+      operationId: get_statistics_v1_clients_statistics_overview_get
+      security:
+      - APIKeyHeader: []
+      parameters:
+      - name: include_archived
+        in: query
+        required: false
+        schema:
+          type: boolean
+          default: false
+          title: Include Archived
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v1/clients/export/csv:
+    get:
+      tags:
+      - clients
+      summary: Export Clients Csv
+      operationId: export_clients_csv_v1_clients_export_csv_get
+      security:
+      - APIKeyHeader: []
+      parameters:
+      - name: include_archived
+        in: query
+        required: false
+        schema:
+          type: boolean
+          default: false
+          title: Include Archived
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v1/clients/by-risk/{risk_level}:
+    get:
+      tags:
+      - clients
+      summary: Get Clients By Risk
+      operationId: get_clients_by_risk_v1_clients_by_risk__risk_level__get
+      security:
+      - APIKeyHeader: []
+      parameters:
+      - name: risk_level
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/RiskLevel'
+      - name: include_archived
+        in: query
+        required: false
+        schema:
+          type: boolean
+          default: false
+          title: Include Archived
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 500
+          minimum: 1
+          default: 100
+          title: Limit
+      - name: offset
+        in: query
+        required: false
+        schema:
+          type: integer
+          minimum: 0
+          default: 0
+          title: Offset
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v1/clients/{client_id}:
+    get:
+      tags:
+      - clients
+      summary: Get Client
+      operationId: get_client_v1_clients__client_id__get
+      security:
+      - APIKeyHeader: []
+      parameters:
+      - name: client_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Client Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientDetailResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v1/clients/{client_id}/history:
+    get:
+      tags:
+      - clients
+      summary: Get Client History
+      operationId: get_client_history_v1_clients__client_id__history_get
+      security:
+      - APIKeyHeader: []
+      parameters:
+      - name: client_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Client Id
+      - name: months
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 24
+          minimum: 1
+          default: 12
+          title: Months
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v1/clients/{client_id}/priorities:
+    get:
+      tags:
+      - clients
+      summary: Get Client Priorities
+      operationId: get_client_priorities_v1_clients__client_id__priorities_get
+      security:
+      - APIKeyHeader: []
+      parameters:
+      - name: client_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Client Id
+      - name: status_filter
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Status Filter
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 200
+          minimum: 1
+          default: 50
+          title: Limit
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v1/clients/{client_id}/notes:
+    get:
+      tags:
+      - clients
+      summary: Get Client Notes
+      operationId: get_client_notes_v1_clients__client_id__notes_get
+      security:
+      - APIKeyHeader: []
+      parameters:
+      - name: client_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Client Id
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 200
+          minimum: 1
+          default: 50
+          title: Limit
+      - name: offset
+        in: query
+        required: false
+        schema:
+          type: integer
+          minimum: 0
+          default: 0
+          title: Offset
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v1/clients/{client_id}/key-people:
+    get:
+      tags:
+      - clients
+      summary: Get Client Key People
+      operationId: get_client_key_people_v1_clients__client_id__key_people_get
+      security:
+      - APIKeyHeader: []
+      parameters:
+      - name: client_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Client Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v1/clients/{client_id}/streams:
+    get:
+      tags:
+      - clients
+      summary: List Client Streams
+      operationId: list_client_streams_v1_clients__client_id__streams_get
+      security:
+      - APIKeyHeader: []
+      parameters:
+      - name: client_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Client Id
+      - name: include_inactive
+        in: query
+        required: false
+        schema:
+          type: boolean
+          default: false
+          title: Include Inactive
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StreamListResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v1/clients/{client_id}/streams/{stream_id}:
+    get:
+      tags:
+      - clients
+      summary: Get Stream
+      operationId: get_stream_v1_clients__client_id__streams__stream_id__get
+      security:
+      - APIKeyHeader: []
+      parameters:
+      - name: client_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Client Id
+      - name: stream_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Stream Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StreamDetailResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    ClientDetailResponse:
+      properties:
+        id:
+          type: string
+          title: Id
+        customerId:
+          type: string
+          title: Customerid
+        name:
+          type: string
+          title: Name
+        score:
+          type: integer
+          title: Score
+        scoreSource:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Scoresource
+          description: 'Score data source: chr1 or chr2'
+        scoreChanges:
+          anyOf:
+          - $ref: '#/components/schemas/ScoreChanges'
+          - type: 'null'
+          description: Score changes over time
+        lastContactDate:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Lastcontactdate
+        lastUpdatedAt:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Lastupdatedat
+        hasInsufficientData:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Hasinsufficientdata
+        metadata:
+          anyOf:
+          - $ref: '#/components/schemas/ClientMetadata'
+          - type: 'null'
+        extraColumns:
+          anyOf:
+          - additionalProperties:
+              type: string
+            type: object
+          - type: 'null'
+          title: Extracolumns
+          description: Custom column values
+        historicalData:
+          anyOf:
+          - items:
+              type: integer
+            type: array
+          - type: 'null'
+          title: Historicaldata
+        archived:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Archived
+        spotlightSummary:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Spotlightsummary
+          description: AI-generated markdown summary of client status for the current week
+        topics:
+          anyOf:
+          - items:
+              additionalProperties: true
+              type: object
+            type: array
+          - type: 'null'
+          title: Topics
+          description: Topic and category scores organized by category
+      type: object
+      required:
+      - id
+      - customerId
+      - name
+      - score
+      title: ClientDetailResponse
+      description: Detailed client response with additional data.
+    StreamListResponse:
+      properties:
+        streams:
+          items:
+            $ref: '#/components/schemas/StreamResponse'
+          type: array
+          title: Streams
+        total:
+          type: integer
+          title: Total
+        parentClientId:
+          type: string
+          title: Parentclientid
+        customerId:
+          type: string
+          title: Customerid
+      type: object
+      required:
+      - streams
+      - total
+      - parentClientId
+      - customerId
+      title: StreamListResponse
+      description: Response model for list of streams.
+    TrendDirection:
+      type: string
+      enum:
+      - improving
+      - declining
+      - stable
+      title: TrendDirection
+    StreamDetailResponse:
+      properties:
+        id:
+          type: string
+          title: Id
+        name:
+          type: string
+          title: Name
+        customerId:
+          type: string
+          title: Customerid
+        parentClientId:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Parentclientid
+        parentClientName:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Parentclientname
+        score:
+          type: number
+          title: Score
+        streamState:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Streamstate
+          description: 'Stream status: pending, active, or inactive'
+        goals:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Goals
+          description: Stream goals/objectives
+        hasInsufficientData:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Hasinsufficientdata
+        historicalData:
+          anyOf:
+          - items:
+              type: integer
+            type: array
+          - type: 'null'
+          title: Historicaldata
+        scoreChanges:
+          anyOf:
+          - $ref: '#/components/schemas/ScoreChanges'
+          - type: 'null'
+          description: Score changes over time
+        spotlight:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Spotlight
+          description: Executive summary from Cortex stream insights
+        insights:
+          anyOf:
+          - items:
+              additionalProperties: true
+              type: object
+            type: array
+          - type: 'null'
+          title: Insights
+          description: Weekly insights
+        contextualClues:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Contextualclues
+          description: Active fires, budget issues, growth opportunities, etc.
+        growthRecommendations:
+          anyOf:
+          - items:
+              additionalProperties: true
+              type: object
+            type: array
+          - type: 'null'
+          title: Growthrecommendations
+          description: Growth strategy recommendations
+      type: object
+      required:
+      - id
+      - name
+      - customerId
+      - score
+      title: StreamDetailResponse
+      description: Detailed stream response with insights from Cortex analytics.
+    ClientListResponse:
+      properties:
+        clients:
+          items:
+            $ref: '#/components/schemas/ClientResponse'
+          type: array
+          title: Clients
+        total:
+          type: integer
+          title: Total
+        customerId:
+          type: string
+          title: Customerid
+      type: object
+      required:
+      - clients
+      - total
+      - customerId
+      title: ClientListResponse
+      description: Response model for list of clients.
+    RiskLevel:
+      type: string
+      enum:
+      - high_risk
+      - medium_risk
+      - low_risk
+      - on_track
+      title: RiskLevel
+    ClientResponse:
+      properties:
+        id:
+          type: string
+          title: Id
+        customerId:
+          type: string
+          title: Customerid
+        name:
+          type: string
+          title: Name
+        score:
+          type: integer
+          title: Score
+        scoreSource:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Scoresource
+          description: 'Score data source: chr1 or chr2'
+        scoreChanges:
+          anyOf:
+          - $ref: '#/components/schemas/ScoreChanges'
+          - type: 'null'
+          description: Score changes over time
+        lastContactDate:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Lastcontactdate
+        lastUpdatedAt:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Lastupdatedat
+        hasInsufficientData:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Hasinsufficientdata
+        metadata:
+          anyOf:
+          - $ref: '#/components/schemas/ClientMetadata'
+          - type: 'null'
+        extraColumns:
+          anyOf:
+          - additionalProperties:
+              type: string
+            type: object
+          - type: 'null'
+          title: Extracolumns
+          description: Custom column values
+        historicalData:
+          anyOf:
+          - items:
+              type: integer
+            type: array
+          - type: 'null'
+          title: Historicaldata
+        archived:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Archived
+      type: object
+      required:
+      - id
+      - customerId
+      - name
+      - score
+      title: ClientResponse
+      description: Response model for client data.
+    ClientMetadata:
+      properties:
+        accountOwner:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Accountowner
+        annualRevenue:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Annualrevenue
+        industry:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Industry
+        location:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Location
+        active:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Active
+        accountStatus:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Accountstatus
+        domain:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Domain
+        clientType:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Clienttype
+        revenueTTM:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Revenuettm
+        revenueF12M:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Revenuef12M
+      type: object
+      title: ClientMetadata
+      description: Client metadata.
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    StreamResponse:
+      properties:
+        id:
+          type: string
+          title: Id
+        name:
+          type: string
+          title: Name
+        customerId:
+          type: string
+          title: Customerid
+        parentClientId:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Parentclientid
+        parentClientName:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Parentclientname
+        score:
+          type: number
+          title: Score
+        streamState:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Streamstate
+          description: 'Stream status: pending, active, or inactive'
+        goals:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Goals
+          description: Stream goals/objectives
+        hasInsufficientData:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Hasinsufficientdata
+        historicalData:
+          anyOf:
+          - items:
+              type: integer
+            type: array
+          - type: 'null'
+          title: Historicaldata
+        scoreChanges:
+          anyOf:
+          - $ref: '#/components/schemas/ScoreChanges'
+          - type: 'null'
+          description: Score changes over time
+      type: object
+      required:
+      - id
+      - name
+      - customerId
+      - score
+      title: StreamResponse
+      description: Response model for a stream (sub-project within a client)
+    ScoreChange:
+      properties:
+        change:
+          type: number
+          title: Change
+          description: Absolute change in score
+        percentage:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Percentage
+          description: Percentage change
+        previousScore:
+          type: number
+          title: Previousscore
+          description: Score at start of period
+      type: object
+      required:
+      - change
+      - previousScore
+      title: ScoreChange
+      description: Score change over a time period.
+    ScoreChanges:
+      properties:
+        7day:
+          anyOf:
+          - $ref: '#/components/schemas/ScoreChange'
+          - type: 'null'
+          description: 7-day change
+        30day:
+          anyOf:
+          - $ref: '#/components/schemas/ScoreChange'
+          - type: 'null'
+          description: 30-day change
+      type: object
+      title: ScoreChanges
+      description: Score changes over different time periods.
+    PortfolioHealthResponse:
+      properties:
+        score:
+          type: integer
+          title: Score
+        breakdown:
+          additionalProperties:
+            type: integer
+          type: object
+          title: Breakdown
+        distribution:
+          additionalProperties:
+            type: integer
+          type: object
+          title: Distribution
+        customerId:
+          type: string
+          title: Customerid
+        chr2CutoverDate:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Chr2Cutoverdate
+          description: CHR 2.0 cutover date if enabled
+      type: object
+      required:
+      - score
+      - breakdown
+      - distribution
+      - customerId
+      title: PortfolioHealthResponse
+      description: Portfolio health metrics.
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+  securitySchemes:
+    APIKeyHeader:
+      type: apiKey
+      in: header
+      name: X-API-Key

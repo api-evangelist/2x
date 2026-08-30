@@ -1,0 +1,27 @@
+openapi: 3.2.0
+info:
+  title: Knownwell Status API
+  description: API for accessing Knownwell client data and Knownwell scores
+  version: v1
+tags:
+- name: status
+paths:
+  /status:
+    get:
+      tags:
+      - status
+      summary: Status Page
+      description: Redirect to external status page.
+      operationId: status_page_status_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+components:
+  securitySchemes:
+    APIKeyHeader:
+      type: apiKey
+      in: header
+      name: X-API-Key

@@ -1,0 +1,278 @@
+openapi: 3.2.0
+info:
+  title: Knownwell Alignment API
+  description: API for accessing Knownwell client data and Knownwell scores
+  version: v1
+tags:
+- name: alignment
+paths:
+  /v1/clients/alignment:
+    get:
+      tags:
+      - alignment
+      summary: List Client Alignments
+      description: 'The current Red/Amber/Green alignment read for every client, as shown
+
+        in the Alignment column of the Commercial Intelligence report.'
+      operationId: list_client_alignments_v1_clients_alignment_get
+      security:
+      - APIKeyHeader: []
+      parameters:
+      - name: week
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            pattern: ^\d{4}-\d{2}-\d{2}$
+          - type: 'null'
+          description: Resolve reads as of this week (YYYY-MM-DD, typically a Monday). Reads filed for later weeks are ignored. Defaults to the latest read.
+          title: Week
+        description: Resolve reads as of this week (YYYY-MM-DD, typically a Monday). Reads filed for later weeks are ignored. Defaults to the latest read.
+      - name: include_archived
+        in: query
+        required: false
+        schema:
+          type: boolean
+          default: false
+          title: Include Archived
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 1000
+          minimum: 1
+          default: 500
+          title: Limit
+      - name: offset
+        in: query
+        required: false
+        schema:
+          type: integer
+          minimum: 0
+          default: 0
+          title: Offset
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlignmentListResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v1/clients/{client_id}/alignment:
+    get:
+      tags:
+      - alignment
+      summary: Get Client Alignment
+      description: The current Red/Amber/Green alignment read for a single client.
+      operationId: get_client_alignment_v1_clients__client_id__alignment_get
+      security:
+      - APIKeyHeader: []
+      parameters:
+      - name: client_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Client Id
+      - name: week
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            pattern: ^\d{4}-\d{2}-\d{2}$
+          - type: 'null'
+          description: Resolve reads as of this week (YYYY-MM-DD, typically a Monday). Reads filed for later weeks are ignored. Defaults to the latest read.
+          title: Week
+        description: Resolve reads as of this week (YYYY-MM-DD, typically a Monday). Reads filed for later weeks are ignored. Defaults to the latest read.
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientAlignmentResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    ClientAlignment:
+      properties:
+        clientId:
+          type: string
+          title: Clientid
+        clientName:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Clientname
+        externalClientId:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Externalclientid
+          description: Customer-assigned client ID (extraColumns['Client ID']), when present
+        knownwellScore:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Knownwellscore
+        scoreSource:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Scoresource
+          description: 'Score data source: chr1 or chr2'
+        alignment:
+          anyOf:
+          - $ref: '#/components/schemas/AlignmentRead'
+          - type: 'null'
+          description: Current alignment read; null when the client has no read on or before the requested week
+      type: object
+      required:
+      - clientId
+      title: ClientAlignment
+      description: Per-client entry in the alignment list.
+    AlignmentRead:
+      properties:
+        value:
+          type: string
+          title: Value
+          description: 'The alignment read: red, amber, or green'
+        week:
+          type: string
+          title: Week
+          description: Monday (YYYY-MM-DD) of the week the read was filed for
+        updatedAt:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Updatedat
+          description: When the read was last edited
+        updatedBy:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Updatedby
+          description: Name of the user who filed the read
+      type: object
+      required:
+      - value
+      - week
+      title: AlignmentRead
+      description: A Red/Amber/Green alignment read filed on a client.
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ClientAlignmentResponse:
+      properties:
+        clientId:
+          type: string
+          title: Clientid
+        clientName:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Clientname
+        externalClientId:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Externalclientid
+          description: Customer-assigned client ID (extraColumns['Client ID']), when present
+        alignment:
+          anyOf:
+          - $ref: '#/components/schemas/AlignmentRead'
+          - type: 'null'
+          description: Current alignment read; null when the client has no read on or before the requested week
+        week:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Week
+          description: As-of week the read was resolved against; null when the latest read was returned
+        customerId:
+          type: string
+          title: Customerid
+      type: object
+      required:
+      - clientId
+      - customerId
+      title: ClientAlignmentResponse
+      description: Alignment read for a single client.
+    AlignmentListResponse:
+      properties:
+        clients:
+          items:
+            $ref: '#/components/schemas/ClientAlignment'
+          type: array
+          title: Clients
+        total:
+          type: integer
+          title: Total
+        week:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Week
+          description: As-of week the reads were resolved against; null when the latest reads were returned
+        customerId:
+          type: string
+          title: Customerid
+      type: object
+      required:
+      - clients
+      - total
+      - customerId
+      title: AlignmentListResponse
+      description: Response model for the client alignment list.
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+  securitySchemes:
+    APIKeyHeader:
+      type: apiKey
+      in: header
+      name: X-API-Key
