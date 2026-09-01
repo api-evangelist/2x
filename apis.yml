@@ -139,7 +139,7 @@ apis:
   humanURL: https://api.knownwell.com/docs
   baseURL: https://api.knownwell.com/ci/v1
   tags:
-  - Alignment
+  - alignment
   tags_raw:
   - alignment
   properties:
