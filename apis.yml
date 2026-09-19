@@ -391,7 +391,7 @@ apis:
   humanURL: https://api.knownwell.com/docs
   baseURL: https://api.knownwell.com/ci/v1
   tags:
-  - Topics
+  - Topic
   tags_raw:
   - topics
   properties:
