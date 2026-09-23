@@ -4,12 +4,12 @@ info:
   description: API for accessing Knownwell client data and Knownwell scores
   version: v1
 tags:
-- name: api-keys
+- name: API Keys
 paths:
   /v1/api-keys:
     post:
       tags:
-      - api-keys
+      - API Keys
       summary: Create Api Key
       description: Create a new API key.
       operationId: create_api_key_v1_api_keys_post
@@ -43,7 +43,7 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
     get:
       tags:
-      - api-keys
+      - API Keys
       summary: List Api Keys
       description: List all API keys.
       operationId: list_api_keys_v1_api_keys_get
@@ -83,7 +83,7 @@ paths:
   /v1/api-keys/{key_id}:
     delete:
       tags:
-      - api-keys
+      - API Keys
       summary: Revoke Api Key
       description: Revoke an API key.
       operationId: revoke_api_key_v1_api_keys__key_id__delete
@@ -113,38 +113,15 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    APIKeyCreate:
+    HTTPValidationError:
       properties:
-        customer_id:
-          type: string
-          title: Customer Id
-          description: Customer ID the key is scoped to
-        name:
-          type: string
-          title: Name
-          description: Friendly name for the API key
-        description:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Description
-          description: Optional description
-        scope:
-          $ref: '#/components/schemas/APIKeyScope'
-          description: Access scope
-          default: read_only
-        expires_days:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Expires Days
-          description: Number of days until expiration (None = no expiration)
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
       type: object
-      required:
-      - customer_id
-      - name
-      title: APIKeyCreate
-      description: Request model for creating an API key.
+      title: HTTPValidationError
     APIKeyResponse:
       properties:
         id:
@@ -207,15 +184,38 @@ components:
       - read_only
       title: APIKeyScope
       description: API key access scope - ALL KEYS ARE READ-ONLY
-    HTTPValidationError:
+    APIKeyCreate:
       properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
+        customer_id:
+          type: string
+          title: Customer Id
+          description: Customer ID the key is scoped to
+        name:
+          type: string
+          title: Name
+          description: Friendly name for the API key
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+          description: Optional description
+        scope:
+          $ref: '#/components/schemas/APIKeyScope'
+          description: Access scope
+          default: read_only
+        expires_days:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Expires Days
+          description: Number of days until expiration (None = no expiration)
       type: object
-      title: HTTPValidationError
+      required:
+      - customer_id
+      - name
+      title: APIKeyCreate
+      description: Request model for creating an API key.
     ValidationError:
       properties:
         loc:

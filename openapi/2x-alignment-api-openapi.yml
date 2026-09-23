@@ -4,12 +4,12 @@ info:
   description: API for accessing Knownwell client data and Knownwell scores
   version: v1
 tags:
-- name: alignment
+- name: Alignment
 paths:
   /v1/clients/alignment:
     get:
       tags:
-      - alignment
+      - Alignment
       summary: List Client Alignments
       description: 'The current Red/Amber/Green alignment read for every client, as shown
 
@@ -69,7 +69,7 @@ paths:
   /v1/clients/{client_id}/alignment:
     get:
       tags:
-      - alignment
+      - Alignment
       summary: Get Client Alignment
       description: The current Red/Amber/Green alignment read for a single client.
       operationId: get_client_alignment_v1_clients__client_id__alignment_get
@@ -108,6 +108,44 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    AlignmentRead:
+      properties:
+        value:
+          type: string
+          title: Value
+          description: 'The alignment read: red, amber, or green'
+        week:
+          type: string
+          title: Week
+          description: Monday (YYYY-MM-DD) of the week the read was filed for
+        updatedAt:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Updatedat
+          description: When the read was last edited
+        updatedBy:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Updatedby
+          description: Name of the user who filed the read
+      type: object
+      required:
+      - value
+      - week
+      title: AlignmentRead
+      description: A Red/Amber/Green alignment read filed on a client.
     ClientAlignment:
       properties:
         clientId:
@@ -145,80 +183,6 @@ components:
       - clientId
       title: ClientAlignment
       description: Per-client entry in the alignment list.
-    AlignmentRead:
-      properties:
-        value:
-          type: string
-          title: Value
-          description: 'The alignment read: red, amber, or green'
-        week:
-          type: string
-          title: Week
-          description: Monday (YYYY-MM-DD) of the week the read was filed for
-        updatedAt:
-          anyOf:
-          - type: string
-            format: date-time
-          - type: 'null'
-          title: Updatedat
-          description: When the read was last edited
-        updatedBy:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Updatedby
-          description: Name of the user who filed the read
-      type: object
-      required:
-      - value
-      - week
-      title: AlignmentRead
-      description: A Red/Amber/Green alignment read filed on a client.
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    ClientAlignmentResponse:
-      properties:
-        clientId:
-          type: string
-          title: Clientid
-        clientName:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Clientname
-        externalClientId:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Externalclientid
-          description: Customer-assigned client ID (extraColumns['Client ID']), when present
-        alignment:
-          anyOf:
-          - $ref: '#/components/schemas/AlignmentRead'
-          - type: 'null'
-          description: Current alignment read; null when the client has no read on or before the requested week
-        week:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Week
-          description: As-of week the read was resolved against; null when the latest read was returned
-        customerId:
-          type: string
-          title: Customerid
-      type: object
-      required:
-      - clientId
-      - customerId
-      title: ClientAlignmentResponse
-      description: Alignment read for a single client.
     AlignmentListResponse:
       properties:
         clients:
@@ -271,6 +235,42 @@ components:
       - msg
       - type
       title: ValidationError
+    ClientAlignmentResponse:
+      properties:
+        clientId:
+          type: string
+          title: Clientid
+        clientName:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Clientname
+        externalClientId:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Externalclientid
+          description: Customer-assigned client ID (extraColumns['Client ID']), when present
+        alignment:
+          anyOf:
+          - $ref: '#/components/schemas/AlignmentRead'
+          - type: 'null'
+          description: Current alignment read; null when the client has no read on or before the requested week
+        week:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Week
+          description: As-of week the read was resolved against; null when the latest read was returned
+        customerId:
+          type: string
+          title: Customerid
+      type: object
+      required:
+      - clientId
+      - customerId
+      title: ClientAlignmentResponse
+      description: Alignment read for a single client.
   securitySchemes:
     APIKeyHeader:
       type: apiKey

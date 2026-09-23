@@ -1,0 +1,48 @@
+{
+  "provider": "2x",
+  "sources": [
+    "_original/2x-knownwell-openapi.json"
+  ],
+  "outputs": [
+    "2x-alignment-api-openapi.yml",
+    "2x-api-keys-api-openapi.yml",
+    "2x-clients-api-openapi.yml",
+    "2x-documentation-api-openapi.yml",
+    "2x-health-api-openapi.yml",
+    "2x-portfolios-api-openapi.yml",
+    "2x-root-api-openapi.yml",
+    "2x-status-api-openapi.yml",
+    "2x-streams-api-openapi.yml",
+    "2x-topics-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "2x-knownwell-openapi.json: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "2x-knownwell-openapi.json: declared missing tag: alignment",
+    "2x-knownwell-openapi.json: declared missing tag: api-keys",
+    "2x-knownwell-openapi.json: declared missing tag: clients",
+    "2x-knownwell-openapi.json: declared missing tag: documentation",
+    "2x-knownwell-openapi.json: declared missing tag: health",
+    "2x-knownwell-openapi.json: declared missing tag: portfolios",
+    "2x-knownwell-openapi.json: declared missing tag: root",
+    "2x-knownwell-openapi.json: declared missing tag: status",
+    "2x-knownwell-openapi.json: declared missing tag: streams",
+    "2x-knownwell-openapi.json: declared missing tag: topics",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "2x-alignment-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "2x-api-keys-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "2x-clients-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "2x-documentation-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "2x-health-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "2x-portfolios-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "2x-root-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "2x-status-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "2x-streams-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "2x-topics-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
+}

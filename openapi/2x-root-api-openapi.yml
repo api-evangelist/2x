@@ -4,12 +4,12 @@ info:
   description: API for accessing Knownwell client data and Knownwell scores
   version: v1
 tags:
-- name: root
+- name: Root
 paths:
   /:
     get:
       tags:
-      - root
+      - Root
       summary: Root
       description: Root endpoint - redirects to documentation
       operationId: root__get

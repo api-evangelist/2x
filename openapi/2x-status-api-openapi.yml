@@ -4,12 +4,12 @@ info:
   description: API for accessing Knownwell client data and Knownwell scores
   version: v1
 tags:
-- name: status
+- name: Status
 paths:
   /status:
     get:
       tags:
-      - status
+      - Status
       summary: Status Page
       description: Redirect to external status page.
       operationId: status_page_status_get

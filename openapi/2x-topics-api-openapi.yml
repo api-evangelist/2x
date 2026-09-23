@@ -4,12 +4,12 @@ info:
   description: API for accessing Knownwell client data and Knownwell scores
   version: v1
 tags:
-- name: topics
+- name: Topics
 paths:
   /v1/topics:
     get:
       tags:
-      - topics
+      - Topics
       summary: List Topics
       operationId: list_topics_v1_topics_get
       responses:
