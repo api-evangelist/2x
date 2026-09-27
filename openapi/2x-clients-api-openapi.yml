@@ -536,108 +536,60 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    ClientListResponse:
-      properties:
-        clients:
-          items:
-            $ref: '#/components/schemas/ClientResponse'
-          type: array
-          title: Clients
-        total:
-          type: integer
-          title: Total
-        customerId:
-          type: string
-          title: Customerid
-      type: object
-      required:
-      - clients
-      - total
-      - customerId
-      title: ClientListResponse
-      description: Response model for list of clients.
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    StreamListResponse:
-      properties:
-        streams:
-          items:
-            $ref: '#/components/schemas/StreamResponse'
-          type: array
-          title: Streams
-        total:
-          type: integer
-          title: Total
-        parentClientId:
-          type: string
-          title: Parentclientid
-        customerId:
-          type: string
-          title: Customerid
-      type: object
-      required:
-      - streams
-      - total
-      - parentClientId
-      - customerId
-      title: StreamListResponse
-      description: Response model for list of streams.
-    RiskLevel:
-      type: string
-      enum:
-      - high_risk
-      - medium_risk
-      - low_risk
-      - on_track
-      title: RiskLevel
-    StreamResponse:
+    ClientResponse:
       properties:
         id:
           type: string
           title: Id
-        name:
-          type: string
-          title: Name
         customerId:
           type: string
           title: Customerid
-        parentClientId:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Parentclientid
-        parentClientName:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Parentclientname
+        name:
+          type: string
+          title: Name
         score:
-          type: number
+          type: integer
           title: Score
-        streamState:
+        scoreSource:
           anyOf:
           - type: string
           - type: 'null'
-          title: Streamstate
-          description: 'Stream status: pending, active, or inactive'
-        goals:
+          title: Scoresource
+          description: 'Score data source: chr1 or chr2'
+        scoreChanges:
+          anyOf:
+          - $ref: '#/components/schemas/ScoreChanges'
+          - type: 'null'
+          description: Score changes over time
+        lastContactDate:
           anyOf:
           - type: string
+            format: date-time
           - type: 'null'
-          title: Goals
-          description: Stream goals/objectives
+          title: Lastcontactdate
+        lastUpdatedAt:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Lastupdatedat
         hasInsufficientData:
           anyOf:
           - type: boolean
           - type: 'null'
           title: Hasinsufficientdata
+        metadata:
+          anyOf:
+          - $ref: '#/components/schemas/ClientMetadata'
+          - type: 'null'
+        extraColumns:
+          anyOf:
+          - additionalProperties:
+              type: string
+            type: object
+          - type: 'null'
+          title: Extracolumns
+          description: Custom column values
         historicalData:
           anyOf:
           - items:
@@ -645,41 +597,19 @@ components:
             type: array
           - type: 'null'
           title: Historicaldata
-        scoreChanges:
+        archived:
           anyOf:
-          - $ref: '#/components/schemas/ScoreChanges'
+          - type: boolean
           - type: 'null'
-          description: Score changes over time
+          title: Archived
       type: object
       required:
       - id
-      - name
       - customerId
+      - name
       - score
-      title: StreamResponse
-      description: Response model for a stream (sub-project within a client)
-    ScoreChanges:
-      properties:
-        7day:
-          anyOf:
-          - $ref: '#/components/schemas/ScoreChange'
-          - type: 'null'
-          description: 7-day change
-        30day:
-          anyOf:
-          - $ref: '#/components/schemas/ScoreChange'
-          - type: 'null'
-          description: 30-day change
-      type: object
-      title: ScoreChanges
-      description: Score changes over different time periods.
-    TrendDirection:
-      type: string
-      enum:
-      - improving
-      - declining
-      - stable
-      title: TrendDirection
+      title: ClientResponse
+      description: Response model for client data.
     ScoreChange:
       properties:
         change:
@@ -794,6 +724,77 @@ components:
       - score
       title: StreamDetailResponse
       description: Detailed stream response with insights from Cortex analytics.
+    StreamListResponse:
+      properties:
+        streams:
+          items:
+            $ref: '#/components/schemas/StreamResponse'
+          type: array
+          title: Streams
+        total:
+          type: integer
+          title: Total
+        parentClientId:
+          type: string
+          title: Parentclientid
+        customerId:
+          type: string
+          title: Customerid
+      type: object
+      required:
+      - streams
+      - total
+      - parentClientId
+      - customerId
+      title: StreamListResponse
+      description: Response model for list of streams.
+    RiskLevel:
+      type: string
+      enum:
+      - high_risk
+      - medium_risk
+      - low_risk
+      - on_track
+      title: RiskLevel
+    TrendDirection:
+      type: string
+      enum:
+      - improving
+      - declining
+      - stable
+      title: TrendDirection
+    PortfolioHealthResponse:
+      properties:
+        score:
+          type: integer
+          title: Score
+        breakdown:
+          additionalProperties:
+            type: integer
+          type: object
+          title: Breakdown
+        distribution:
+          additionalProperties:
+            type: integer
+          type: object
+          title: Distribution
+        customerId:
+          type: string
+          title: Customerid
+        chr2CutoverDate:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Chr2Cutoverdate
+          description: CHR 2.0 cutover date if enabled
+      type: object
+      required:
+      - score
+      - breakdown
+      - distribution
+      - customerId
+      title: PortfolioHealthResponse
+      description: Portfolio health metrics.
     ValidationError:
       properties:
         loc:
@@ -820,6 +821,166 @@ components:
       - msg
       - type
       title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ScoreChanges:
+      properties:
+        7day:
+          anyOf:
+          - $ref: '#/components/schemas/ScoreChange'
+          - type: 'null'
+          description: 7-day change
+        30day:
+          anyOf:
+          - $ref: '#/components/schemas/ScoreChange'
+          - type: 'null'
+          description: 30-day change
+      type: object
+      title: ScoreChanges
+      description: Score changes over different time periods.
+    ClientMetadata:
+      properties:
+        accountOwner:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Accountowner
+        annualRevenue:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Annualrevenue
+        industry:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Industry
+        location:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Location
+        active:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Active
+        accountStatus:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Accountstatus
+        domain:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Domain
+        clientType:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Clienttype
+        revenueTTM:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Revenuettm
+        revenueF12M:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Revenuef12M
+      type: object
+      title: ClientMetadata
+      description: Client metadata.
+    ClientListResponse:
+      properties:
+        clients:
+          items:
+            $ref: '#/components/schemas/ClientResponse'
+          type: array
+          title: Clients
+        total:
+          type: integer
+          title: Total
+        customerId:
+          type: string
+          title: Customerid
+      type: object
+      required:
+      - clients
+      - total
+      - customerId
+      title: ClientListResponse
+      description: Response model for list of clients.
+    StreamResponse:
+      properties:
+        id:
+          type: string
+          title: Id
+        name:
+          type: string
+          title: Name
+        customerId:
+          type: string
+          title: Customerid
+        parentClientId:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Parentclientid
+        parentClientName:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Parentclientname
+        score:
+          type: number
+          title: Score
+        streamState:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Streamstate
+          description: 'Stream status: pending, active, or inactive'
+        goals:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Goals
+          description: Stream goals/objectives
+        hasInsufficientData:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Hasinsufficientdata
+        historicalData:
+          anyOf:
+          - items:
+              type: integer
+            type: array
+          - type: 'null'
+          title: Historicaldata
+        scoreChanges:
+          anyOf:
+          - $ref: '#/components/schemas/ScoreChanges'
+          - type: 'null'
+          description: Score changes over time
+      type: object
+      required:
+      - id
+      - name
+      - customerId
+      - score
+      title: StreamResponse
+      description: Response model for a stream (sub-project within a client)
     ClientDetailResponse:
       properties:
         id:
@@ -909,167 +1070,6 @@ components:
       - score
       title: ClientDetailResponse
       description: Detailed client response with additional data.
-    ClientResponse:
-      properties:
-        id:
-          type: string
-          title: Id
-        customerId:
-          type: string
-          title: Customerid
-        name:
-          type: string
-          title: Name
-        score:
-          type: integer
-          title: Score
-        scoreSource:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Scoresource
-          description: 'Score data source: chr1 or chr2'
-        scoreChanges:
-          anyOf:
-          - $ref: '#/components/schemas/ScoreChanges'
-          - type: 'null'
-          description: Score changes over time
-        lastContactDate:
-          anyOf:
-          - type: string
-            format: date-time
-          - type: 'null'
-          title: Lastcontactdate
-        lastUpdatedAt:
-          anyOf:
-          - type: string
-            format: date-time
-          - type: 'null'
-          title: Lastupdatedat
-        hasInsufficientData:
-          anyOf:
-          - type: boolean
-          - type: 'null'
-          title: Hasinsufficientdata
-        metadata:
-          anyOf:
-          - $ref: '#/components/schemas/ClientMetadata'
-          - type: 'null'
-        extraColumns:
-          anyOf:
-          - additionalProperties:
-              type: string
-            type: object
-          - type: 'null'
-          title: Extracolumns
-          description: Custom column values
-        historicalData:
-          anyOf:
-          - items:
-              type: integer
-            type: array
-          - type: 'null'
-          title: Historicaldata
-        archived:
-          anyOf:
-          - type: boolean
-          - type: 'null'
-          title: Archived
-      type: object
-      required:
-      - id
-      - customerId
-      - name
-      - score
-      title: ClientResponse
-      description: Response model for client data.
-    PortfolioHealthResponse:
-      properties:
-        score:
-          type: integer
-          title: Score
-        breakdown:
-          additionalProperties:
-            type: integer
-          type: object
-          title: Breakdown
-        distribution:
-          additionalProperties:
-            type: integer
-          type: object
-          title: Distribution
-        customerId:
-          type: string
-          title: Customerid
-        chr2CutoverDate:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Chr2Cutoverdate
-          description: CHR 2.0 cutover date if enabled
-      type: object
-      required:
-      - score
-      - breakdown
-      - distribution
-      - customerId
-      title: PortfolioHealthResponse
-      description: Portfolio health metrics.
-    ClientMetadata:
-      properties:
-        accountOwner:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Accountowner
-        annualRevenue:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Annualrevenue
-        industry:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Industry
-        location:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Location
-        active:
-          anyOf:
-          - type: boolean
-          - type: 'null'
-          title: Active
-        accountStatus:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Accountstatus
-        domain:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Domain
-        clientType:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Clienttype
-        revenueTTM:
-          anyOf:
-          - type: number
-          - type: 'null'
-          title: Revenuettm
-        revenueF12M:
-          anyOf:
-          - type: number
-          - type: 'null'
-          title: Revenuef12M
-      type: object
-      title: ClientMetadata
-      description: Client metadata.
   securitySchemes:
     APIKeyHeader:
       type: apiKey

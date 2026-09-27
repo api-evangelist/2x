@@ -108,44 +108,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    AlignmentRead:
-      properties:
-        value:
-          type: string
-          title: Value
-          description: 'The alignment read: red, amber, or green'
-        week:
-          type: string
-          title: Week
-          description: Monday (YYYY-MM-DD) of the week the read was filed for
-        updatedAt:
-          anyOf:
-          - type: string
-            format: date-time
-          - type: 'null'
-          title: Updatedat
-          description: When the read was last edited
-        updatedBy:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Updatedby
-          description: Name of the user who filed the read
-      type: object
-      required:
-      - value
-      - week
-      title: AlignmentRead
-      description: A Red/Amber/Green alignment read filed on a client.
     ClientAlignment:
       properties:
         clientId:
@@ -235,6 +197,15 @@ components:
       - msg
       - type
       title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     ClientAlignmentResponse:
       properties:
         clientId:
@@ -271,6 +242,35 @@ components:
       - customerId
       title: ClientAlignmentResponse
       description: Alignment read for a single client.
+    AlignmentRead:
+      properties:
+        value:
+          type: string
+          title: Value
+          description: 'The alignment read: red, amber, or green'
+        week:
+          type: string
+          title: Week
+          description: Monday (YYYY-MM-DD) of the week the read was filed for
+        updatedAt:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Updatedat
+          description: When the read was last edited
+        updatedBy:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Updatedby
+          description: Name of the user who filed the read
+      type: object
+      required:
+      - value
+      - week
+      title: AlignmentRead
+      description: A Red/Amber/Green alignment read filed on a client.
   securitySchemes:
     APIKeyHeader:
       type: apiKey

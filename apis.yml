@@ -77,7 +77,7 @@ tags:
 - Revenue Operations
 - Commercial Intelligence
 - Customer Success
-- Agentic AI
+- AI Agents
 - Demand Generation
 tags_raw:
 - Company
@@ -105,6 +105,10 @@ apis:
   baseURL: https://mcp.knownwell.com/mcp
   tags:
   - MCP
+  - AI Agents
+  - Commercial Intelligence
+  tags_raw:
+  - MCP
   - Agentic AI
   - Commercial Intelligence
   properties:
@@ -116,23 +120,19 @@ apis:
     url: scopes/2x-scopes.yml
   - type: Authentication
     url: authentication/2x-authentication.yml
-- name: 2X Website WordPress REST API
-  description: >-
-    The public WordPress REST API served by the 2x.com corporate website. It is anonymously readable and
-    exposes 322 routes across 13 namespaces (wp/v2, yoast/v1, wp-abilities/v1, redirection/v1 and others),
-    covering posts, pages, customer stories, open roles, testimonials and media. It also carries one first-party
-    namespace 2X built itself, maturity/v1, which serves the submission records behind 2X's marketing-maturity
-    assessment. This is content infrastructure provided by the CMS, not a 2X product API — recorded because
-    it is a genuinely callable public surface on 2X's own domain.
-  humanURL: https://developer.wordpress.org/rest-api/
-  baseURL: https://2x.com/wp-json/
+- aid: 2x:2x-com-website-wordpress-rest
+  name: 2X Website (WordPress REST)
+  description: 'The public WordPress REST API (wp-json) of the 2X website at 2x.com: the route index of
+    the site''s content management system, catalogued as one site surface rather than as separate APIs.'
+  baseURL: https://2x.com/wp-json
   tags:
-  - Content
-  - CMS
   - WordPress
+  x-surface: platform-generated
   properties:
   - type: Documentation
-    url: https://developer.wordpress.org/rest-api/
+    url: https://2x.com/wp-json
+  x-platform: wordpress
+  x-platform-surface: rest
 - aid: 2x:2x-alignment-api
   name: 2X Alignment API
   description: The alignment API from 2X — 2 operation(s) for alignment.
