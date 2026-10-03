@@ -108,6 +108,87 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    AlignmentListResponse:
+      properties:
+        clients:
+          items:
+            $ref: '#/components/schemas/ClientAlignment'
+          type: array
+          title: Clients
+        total:
+          type: integer
+          title: Total
+        week:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Week
+          description: As-of week the reads were resolved against; null when the latest reads were returned
+        customerId:
+          type: string
+          title: Customerid
+      type: object
+      required:
+      - clients
+      - total
+      - customerId
+      title: AlignmentListResponse
+      description: Response model for the client alignment list.
+    AlignmentRead:
+      properties:
+        value:
+          type: string
+          title: Value
+          description: 'The alignment read: red, amber, or green'
+        week:
+          type: string
+          title: Week
+          description: Monday (YYYY-MM-DD) of the week the read was filed for
+        updatedAt:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Updatedat
+          description: When the read was last edited
+        updatedBy:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Updatedby
+          description: Name of the user who filed the read
+      type: object
+      required:
+      - value
+      - week
+      title: AlignmentRead
+      description: A Red/Amber/Green alignment read filed on a client.
     ClientAlignment:
       properties:
         clientId:
@@ -145,67 +226,6 @@ components:
       - clientId
       title: ClientAlignment
       description: Per-client entry in the alignment list.
-    AlignmentListResponse:
-      properties:
-        clients:
-          items:
-            $ref: '#/components/schemas/ClientAlignment'
-          type: array
-          title: Clients
-        total:
-          type: integer
-          title: Total
-        week:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Week
-          description: As-of week the reads were resolved against; null when the latest reads were returned
-        customerId:
-          type: string
-          title: Customerid
-      type: object
-      required:
-      - clients
-      - total
-      - customerId
-      title: AlignmentListResponse
-      description: Response model for the client alignment list.
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
     ClientAlignmentResponse:
       properties:
         clientId:
@@ -242,35 +262,15 @@ components:
       - customerId
       title: ClientAlignmentResponse
       description: Alignment read for a single client.
-    AlignmentRead:
+    HTTPValidationError:
       properties:
-        value:
-          type: string
-          title: Value
-          description: 'The alignment read: red, amber, or green'
-        week:
-          type: string
-          title: Week
-          description: Monday (YYYY-MM-DD) of the week the read was filed for
-        updatedAt:
-          anyOf:
-          - type: string
-            format: date-time
-          - type: 'null'
-          title: Updatedat
-          description: When the read was last edited
-        updatedBy:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Updatedby
-          description: Name of the user who filed the read
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
       type: object
-      required:
-      - value
-      - week
-      title: AlignmentRead
-      description: A Red/Amber/Green alignment read filed on a client.
+      title: HTTPValidationError
   securitySchemes:
     APIKeyHeader:
       type: apiKey
