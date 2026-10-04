@@ -108,6 +108,79 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    ClientAlignmentResponse:
+      properties:
+        clientId:
+          type: string
+          title: Clientid
+        clientName:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Clientname
+        externalClientId:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Externalclientid
+          description: Customer-assigned client ID (extraColumns['Client ID']), when present
+        alignment:
+          anyOf:
+          - $ref: '#/components/schemas/AlignmentRead'
+          - type: 'null'
+          description: Current alignment read; null when the client has no read on or before the requested week
+        week:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Week
+          description: As-of week the read was resolved against; null when the latest read was returned
+        customerId:
+          type: string
+          title: Customerid
+      type: object
+      required:
+      - clientId
+      - customerId
+      title: ClientAlignmentResponse
+      description: Alignment read for a single client.
+    ClientAlignment:
+      properties:
+        clientId:
+          type: string
+          title: Clientid
+        clientName:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Clientname
+        externalClientId:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Externalclientid
+          description: Customer-assigned client ID (extraColumns['Client ID']), when present
+        knownwellScore:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Knownwellscore
+        scoreSource:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Scoresource
+          description: 'Score data source: chr1 or chr2'
+        alignment:
+          anyOf:
+          - $ref: '#/components/schemas/AlignmentRead'
+          - type: 'null'
+          description: Current alignment read; null when the client has no read on or before the requested week
+      type: object
+      required:
+      - clientId
+      title: ClientAlignment
+      description: Per-client entry in the alignment list.
     ValidationError:
       properties:
         loc:
@@ -189,79 +262,6 @@ components:
       - week
       title: AlignmentRead
       description: A Red/Amber/Green alignment read filed on a client.
-    ClientAlignment:
-      properties:
-        clientId:
-          type: string
-          title: Clientid
-        clientName:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Clientname
-        externalClientId:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Externalclientid
-          description: Customer-assigned client ID (extraColumns['Client ID']), when present
-        knownwellScore:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Knownwellscore
-        scoreSource:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Scoresource
-          description: 'Score data source: chr1 or chr2'
-        alignment:
-          anyOf:
-          - $ref: '#/components/schemas/AlignmentRead'
-          - type: 'null'
-          description: Current alignment read; null when the client has no read on or before the requested week
-      type: object
-      required:
-      - clientId
-      title: ClientAlignment
-      description: Per-client entry in the alignment list.
-    ClientAlignmentResponse:
-      properties:
-        clientId:
-          type: string
-          title: Clientid
-        clientName:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Clientname
-        externalClientId:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Externalclientid
-          description: Customer-assigned client ID (extraColumns['Client ID']), when present
-        alignment:
-          anyOf:
-          - $ref: '#/components/schemas/AlignmentRead'
-          - type: 'null'
-          description: Current alignment read; null when the client has no read on or before the requested week
-        week:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Week
-          description: As-of week the read was resolved against; null when the latest read was returned
-        customerId:
-          type: string
-          title: Customerid
-      type: object
-      required:
-      - clientId
-      - customerId
-      title: ClientAlignmentResponse
-      description: Alignment read for a single client.
     HTTPValidationError:
       properties:
         detail:

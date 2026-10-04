@@ -536,32 +536,67 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    ValidationError:
+    StreamResponse:
       properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
+        id:
           type: string
-          title: Message
-        type:
+          title: Id
+        name:
           type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
+          title: Name
+        customerId:
+          type: string
+          title: Customerid
+        parentClientId:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Parentclientid
+        parentClientName:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Parentclientname
+        score:
+          type: number
+          title: Score
+        streamState:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Streamstate
+          description: 'Stream status: pending, active, or inactive'
+        goals:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Goals
+          description: Stream goals/objectives
+        hasInsufficientData:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Hasinsufficientdata
+        historicalData:
+          anyOf:
+          - items:
+              type: integer
+            type: array
+          - type: 'null'
+          title: Historicaldata
+        scoreChanges:
+          anyOf:
+          - $ref: '#/components/schemas/ScoreChanges'
+          - type: 'null'
+          description: Score changes over time
       type: object
       required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
+      - id
+      - name
+      - customerId
+      - score
+      title: StreamResponse
+      description: Response model for a stream (sub-project within a client)
     StreamDetailResponse:
       properties:
         id:
@@ -654,82 +689,56 @@ components:
       - score
       title: StreamDetailResponse
       description: Detailed stream response with insights from Cortex analytics.
-    StreamResponse:
+    StreamListResponse:
       properties:
-        id:
+        streams:
+          items:
+            $ref: '#/components/schemas/StreamResponse'
+          type: array
+          title: Streams
+        total:
+          type: integer
+          title: Total
+        parentClientId:
           type: string
-          title: Id
-        name:
-          type: string
-          title: Name
+          title: Parentclientid
         customerId:
           type: string
           title: Customerid
-        parentClientId:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Parentclientid
-        parentClientName:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Parentclientname
-        score:
-          type: number
-          title: Score
-        streamState:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Streamstate
-          description: 'Stream status: pending, active, or inactive'
-        goals:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Goals
-          description: Stream goals/objectives
-        hasInsufficientData:
-          anyOf:
-          - type: boolean
-          - type: 'null'
-          title: Hasinsufficientdata
-        historicalData:
-          anyOf:
-          - items:
-              type: integer
-            type: array
-          - type: 'null'
-          title: Historicaldata
-        scoreChanges:
-          anyOf:
-          - $ref: '#/components/schemas/ScoreChanges'
-          - type: 'null'
-          description: Score changes over time
       type: object
       required:
-      - id
-      - name
+      - streams
+      - total
+      - parentClientId
       - customerId
-      - score
-      title: StreamResponse
-      description: Response model for a stream (sub-project within a client)
-    TrendDirection:
-      type: string
-      enum:
-      - improving
-      - declining
-      - stable
-      title: TrendDirection
-    RiskLevel:
-      type: string
-      enum:
-      - high_risk
-      - medium_risk
-      - low_risk
-      - on_track
-      title: RiskLevel
+      title: StreamListResponse
+      description: Response model for list of streams.
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
     ScoreChange:
       properties:
         change:
@@ -752,6 +761,21 @@ components:
       - previousScore
       title: ScoreChange
       description: Score change over a time period.
+    TrendDirection:
+      type: string
+      enum:
+      - improving
+      - declining
+      - stable
+      title: TrendDirection
+    RiskLevel:
+      type: string
+      enum:
+      - high_risk
+      - medium_risk
+      - low_risk
+      - on_track
+      title: RiskLevel
     ScoreChanges:
       properties:
         7day:
@@ -799,6 +823,70 @@ components:
       - customerId
       title: PortfolioHealthResponse
       description: Portfolio health metrics.
+    ClientMetadata:
+      properties:
+        accountOwner:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Accountowner
+        annualRevenue:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Annualrevenue
+        industry:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Industry
+        location:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Location
+        active:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Active
+        accountStatus:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Accountstatus
+        domain:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Domain
+        clientType:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Clienttype
+        revenueTTM:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Revenuettm
+        revenueF12M:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Revenuef12M
+      type: object
+      title: ClientMetadata
+      description: Client metadata.
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     ClientResponse:
       properties:
         id:
@@ -873,59 +961,6 @@ components:
       - score
       title: ClientResponse
       description: Response model for client data.
-    StreamListResponse:
-      properties:
-        streams:
-          items:
-            $ref: '#/components/schemas/StreamResponse'
-          type: array
-          title: Streams
-        total:
-          type: integer
-          title: Total
-        parentClientId:
-          type: string
-          title: Parentclientid
-        customerId:
-          type: string
-          title: Customerid
-      type: object
-      required:
-      - streams
-      - total
-      - parentClientId
-      - customerId
-      title: StreamListResponse
-      description: Response model for list of streams.
-    ClientListResponse:
-      properties:
-        clients:
-          items:
-            $ref: '#/components/schemas/ClientResponse'
-          type: array
-          title: Clients
-        total:
-          type: integer
-          title: Total
-        customerId:
-          type: string
-          title: Customerid
-      type: object
-      required:
-      - clients
-      - total
-      - customerId
-      title: ClientListResponse
-      description: Response model for list of clients.
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
     ClientDetailResponse:
       properties:
         id:
@@ -1015,61 +1050,26 @@ components:
       - score
       title: ClientDetailResponse
       description: Detailed client response with additional data.
-    ClientMetadata:
+    ClientListResponse:
       properties:
-        accountOwner:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Accountowner
-        annualRevenue:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Annualrevenue
-        industry:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Industry
-        location:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Location
-        active:
-          anyOf:
-          - type: boolean
-          - type: 'null'
-          title: Active
-        accountStatus:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Accountstatus
-        domain:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Domain
-        clientType:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Clienttype
-        revenueTTM:
-          anyOf:
-          - type: number
-          - type: 'null'
-          title: Revenuettm
-        revenueF12M:
-          anyOf:
-          - type: number
-          - type: 'null'
-          title: Revenuef12M
+        clients:
+          items:
+            $ref: '#/components/schemas/ClientResponse'
+          type: array
+          title: Clients
+        total:
+          type: integer
+          title: Total
+        customerId:
+          type: string
+          title: Customerid
       type: object
-      title: ClientMetadata
-      description: Client metadata.
+      required:
+      - clients
+      - total
+      - customerId
+      title: ClientListResponse
+      description: Response model for list of clients.
   securitySchemes:
     APIKeyHeader:
       type: apiKey

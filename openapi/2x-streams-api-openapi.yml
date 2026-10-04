@@ -54,6 +54,15 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     ValidationError:
       properties:
         loc:
@@ -80,6 +89,63 @@ components:
       - msg
       - type
       title: ValidationError
+    ScoreChange:
+      properties:
+        change:
+          type: number
+          title: Change
+          description: Absolute change in score
+        percentage:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Percentage
+          description: Percentage change
+        previousScore:
+          type: number
+          title: Previousscore
+          description: Score at start of period
+      type: object
+      required:
+      - change
+      - previousScore
+      title: ScoreChange
+      description: Score change over a time period.
+    ScoreChanges:
+      properties:
+        7day:
+          anyOf:
+          - $ref: '#/components/schemas/ScoreChange'
+          - type: 'null'
+          description: 7-day change
+        30day:
+          anyOf:
+          - $ref: '#/components/schemas/ScoreChange'
+          - type: 'null'
+          description: 30-day change
+      type: object
+      title: ScoreChanges
+      description: Score changes over different time periods.
+    AllStreamsListResponse:
+      properties:
+        streams:
+          items:
+            $ref: '#/components/schemas/StreamResponse'
+          type: array
+          title: Streams
+        total:
+          type: integer
+          title: Total
+        customerId:
+          type: string
+          title: Customerid
+      type: object
+      required:
+      - streams
+      - total
+      - customerId
+      title: AllStreamsListResponse
+      description: Response model for listing all streams across all clients.
     StreamResponse:
       properties:
         id:
@@ -141,72 +207,6 @@ components:
       - score
       title: StreamResponse
       description: Response model for a stream (sub-project within a client)
-    ScoreChange:
-      properties:
-        change:
-          type: number
-          title: Change
-          description: Absolute change in score
-        percentage:
-          anyOf:
-          - type: number
-          - type: 'null'
-          title: Percentage
-          description: Percentage change
-        previousScore:
-          type: number
-          title: Previousscore
-          description: Score at start of period
-      type: object
-      required:
-      - change
-      - previousScore
-      title: ScoreChange
-      description: Score change over a time period.
-    ScoreChanges:
-      properties:
-        7day:
-          anyOf:
-          - $ref: '#/components/schemas/ScoreChange'
-          - type: 'null'
-          description: 7-day change
-        30day:
-          anyOf:
-          - $ref: '#/components/schemas/ScoreChange'
-          - type: 'null'
-          description: 30-day change
-      type: object
-      title: ScoreChanges
-      description: Score changes over different time periods.
-    AllStreamsListResponse:
-      properties:
-        streams:
-          items:
-            $ref: '#/components/schemas/StreamResponse'
-          type: array
-          title: Streams
-        total:
-          type: integer
-          title: Total
-        customerId:
-          type: string
-          title: Customerid
-      type: object
-      required:
-      - streams
-      - total
-      - customerId
-      title: AllStreamsListResponse
-      description: Response model for listing all streams across all clients.
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
   securitySchemes:
     APIKeyHeader:
       type: apiKey
