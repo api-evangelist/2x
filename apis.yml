@@ -63,7 +63,7 @@ x-tier: profiled
 x-tier-reason: published-contract
 specificationVersion: '0.23'
 created: '2026-07-17'
-modified: '2026-08-13'
+modified: '2026-10-06'
 tags:
 - Company
 - Marketing
@@ -419,6 +419,10 @@ maintainers:
 - FN: APIs.json
   email: info@apis.io
 common:
+- url: https://2x.com/blog/
+  type: Blog
+- url: https://2x.com/category/blog/feed/
+  type: BlogRSS
 - type: Overlay
   url: overlays/2x-knownwell-overlay.yaml
 - type: DomainSecurity
