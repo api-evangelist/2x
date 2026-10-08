@@ -419,6 +419,8 @@ maintainers:
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: RateLimits
+  url: rate-limits/2x-rate-limits.yml
 - url: https://2x.com/blog/
   type: Blog
 - url: https://2x.com/category/blog/feed/
