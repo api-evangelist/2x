@@ -81,64 +81,80 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    PortfolioResponse:
+    ClientResponse:
       properties:
         id:
           type: string
           title: Id
-        name:
-          type: string
-          title: Name
-        color:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Color
-        description:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Description
         customerId:
           type: string
           title: Customerid
-        clientCount:
+        name:
+          type: string
+          title: Name
+        score:
           type: integer
-          title: Clientcount
-          description: Number of clients in portfolio
-        userIds:
+          title: Score
+        scoreSource:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Scoresource
+          description: 'Score data source: chr1 or chr2'
+        scoreChanges:
+          anyOf:
+          - $ref: '#/components/schemas/ScoreChanges'
+          - type: 'null'
+          description: Score changes over time
+        lastContactDate:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Lastcontactdate
+        lastUpdatedAt:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Lastupdatedat
+        hasInsufficientData:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Hasinsufficientdata
+        metadata:
+          anyOf:
+          - $ref: '#/components/schemas/ClientMetadata'
+          - type: 'null'
+        extraColumns:
+          anyOf:
+          - additionalProperties:
+              type: string
+            type: object
+          - type: 'null'
+          title: Extracolumns
+          description: Custom column values
+        historicalData:
           anyOf:
           - items:
-              type: string
+              type: integer
             type: array
           - type: 'null'
-          title: Userids
-          description: User IDs with access
-        isSystem:
-          type: boolean
-          title: Issystem
-          description: Whether this is a system portfolio
-          default: false
-        createdAt:
+          title: Historicaldata
+        archived:
           anyOf:
-          - type: string
-            format: date-time
+          - type: boolean
           - type: 'null'
-          title: Createdat
-        updatedAt:
-          anyOf:
-          - type: string
-            format: date-time
-          - type: 'null'
-          title: Updatedat
+          title: Archived
       type: object
       required:
       - id
-      - name
       - customerId
-      - clientCount
-      title: PortfolioResponse
-      description: Response model for portfolio list.
+      - name
+      - score
+      title: ClientResponse
+      description: Response model for client data.
     ValidationError:
       properties:
         loc:
@@ -165,28 +181,21 @@ components:
       - msg
       - type
       title: ValidationError
-    ScoreChange:
+    ScoreChanges:
       properties:
-        change:
-          type: number
-          title: Change
-          description: Absolute change in score
-        percentage:
+        7day:
           anyOf:
-          - type: number
+          - $ref: '#/components/schemas/ScoreChange'
           - type: 'null'
-          title: Percentage
-          description: Percentage change
-        previousScore:
-          type: number
-          title: Previousscore
-          description: Score at start of period
+          description: 7-day change
+        30day:
+          anyOf:
+          - $ref: '#/components/schemas/ScoreChange'
+          - type: 'null'
+          description: 30-day change
       type: object
-      required:
-      - change
-      - previousScore
-      title: ScoreChange
-      description: Score change over a time period.
+      title: ScoreChanges
+      description: Score changes over different time periods.
     PortfolioDetailResponse:
       properties:
         id:
@@ -262,6 +271,69 @@ components:
       - clients
       title: PortfolioDetailResponse
       description: Detailed portfolio response with clients and health metrics.
+    PortfolioHealthResponse:
+      properties:
+        score:
+          type: integer
+          title: Score
+        breakdown:
+          additionalProperties:
+            type: integer
+          type: object
+          title: Breakdown
+        distribution:
+          additionalProperties:
+            type: integer
+          type: object
+          title: Distribution
+        customerId:
+          type: string
+          title: Customerid
+        chr2CutoverDate:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Chr2Cutoverdate
+          description: CHR 2.0 cutover date if enabled
+      type: object
+      required:
+      - score
+      - breakdown
+      - distribution
+      - customerId
+      title: PortfolioHealthResponse
+      description: Portfolio health metrics.
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ScoreChange:
+      properties:
+        change:
+          type: number
+          title: Change
+          description: Absolute change in score
+        percentage:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Percentage
+          description: Percentage change
+        previousScore:
+          type: number
+          title: Previousscore
+          description: Score at start of period
+      type: object
+      required:
+      - change
+      - previousScore
+      title: ScoreChange
+      description: Score change over a time period.
     PortfolioUser:
       properties:
         id:
@@ -302,53 +374,64 @@ components:
       - customerId
       title: PortfolioListResponse
       description: Response model for list of portfolios.
-    ScoreChanges:
+    PortfolioResponse:
       properties:
-        7day:
-          anyOf:
-          - $ref: '#/components/schemas/ScoreChange'
-          - type: 'null'
-          description: 7-day change
-        30day:
-          anyOf:
-          - $ref: '#/components/schemas/ScoreChange'
-          - type: 'null'
-          description: 30-day change
-      type: object
-      title: ScoreChanges
-      description: Score changes over different time periods.
-    PortfolioHealthResponse:
-      properties:
-        score:
-          type: integer
-          title: Score
-        breakdown:
-          additionalProperties:
-            type: integer
-          type: object
-          title: Breakdown
-        distribution:
-          additionalProperties:
-            type: integer
-          type: object
-          title: Distribution
-        customerId:
+        id:
           type: string
-          title: Customerid
-        chr2CutoverDate:
+          title: Id
+        name:
+          type: string
+          title: Name
+        color:
           anyOf:
           - type: string
           - type: 'null'
-          title: Chr2Cutoverdate
-          description: CHR 2.0 cutover date if enabled
+          title: Color
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+        customerId:
+          type: string
+          title: Customerid
+        clientCount:
+          type: integer
+          title: Clientcount
+          description: Number of clients in portfolio
+        userIds:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Userids
+          description: User IDs with access
+        isSystem:
+          type: boolean
+          title: Issystem
+          description: Whether this is a system portfolio
+          default: false
+        createdAt:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Createdat
+        updatedAt:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Updatedat
       type: object
       required:
-      - score
-      - breakdown
-      - distribution
+      - id
+      - name
       - customerId
-      title: PortfolioHealthResponse
-      description: Portfolio health metrics.
+      - clientCount
+      title: PortfolioResponse
+      description: Response model for portfolio list.
     ClientMetadata:
       properties:
         accountOwner:
@@ -404,89 +487,6 @@ components:
       type: object
       title: ClientMetadata
       description: Client metadata.
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    ClientResponse:
-      properties:
-        id:
-          type: string
-          title: Id
-        customerId:
-          type: string
-          title: Customerid
-        name:
-          type: string
-          title: Name
-        score:
-          type: integer
-          title: Score
-        scoreSource:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Scoresource
-          description: 'Score data source: chr1 or chr2'
-        scoreChanges:
-          anyOf:
-          - $ref: '#/components/schemas/ScoreChanges'
-          - type: 'null'
-          description: Score changes over time
-        lastContactDate:
-          anyOf:
-          - type: string
-            format: date-time
-          - type: 'null'
-          title: Lastcontactdate
-        lastUpdatedAt:
-          anyOf:
-          - type: string
-            format: date-time
-          - type: 'null'
-          title: Lastupdatedat
-        hasInsufficientData:
-          anyOf:
-          - type: boolean
-          - type: 'null'
-          title: Hasinsufficientdata
-        metadata:
-          anyOf:
-          - $ref: '#/components/schemas/ClientMetadata'
-          - type: 'null'
-        extraColumns:
-          anyOf:
-          - additionalProperties:
-              type: string
-            type: object
-          - type: 'null'
-          title: Extracolumns
-          description: Custom column values
-        historicalData:
-          anyOf:
-          - items:
-              type: integer
-            type: array
-          - type: 'null'
-          title: Historicaldata
-        archived:
-          anyOf:
-          - type: boolean
-          - type: 'null'
-          title: Archived
-      type: object
-      required:
-      - id
-      - customerId
-      - name
-      - score
-      title: ClientResponse
-      description: Response model for client data.
   securitySchemes:
     APIKeyHeader:
       type: apiKey

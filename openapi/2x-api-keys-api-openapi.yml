@@ -113,6 +113,32 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
     APIKeyResponse:
       properties:
         id:
@@ -169,32 +195,21 @@ components:
       - last_used_at
       title: APIKeyResponse
       description: Response model for API key.
-    ValidationError:
+    HTTPValidationError:
       properties:
-        loc:
+        detail:
           items:
-            anyOf:
-            - type: string
-            - type: integer
+            $ref: '#/components/schemas/ValidationError'
           type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
+          title: Detail
       type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
+      title: HTTPValidationError
+    APIKeyScope:
+      type: string
+      enum:
+      - read_only
+      title: APIKeyScope
+      description: API key access scope - ALL KEYS ARE READ-ONLY
     APIKeyCreate:
       properties:
         customer_id:
@@ -227,21 +242,6 @@ components:
       - name
       title: APIKeyCreate
       description: Request model for creating an API key.
-    APIKeyScope:
-      type: string
-      enum:
-      - read_only
-      title: APIKeyScope
-      description: API key access scope - ALL KEYS ARE READ-ONLY
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
   securitySchemes:
     APIKeyHeader:
       type: apiKey

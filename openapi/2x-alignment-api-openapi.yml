@@ -108,42 +108,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    ClientAlignmentResponse:
-      properties:
-        clientId:
-          type: string
-          title: Clientid
-        clientName:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Clientname
-        externalClientId:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Externalclientid
-          description: Customer-assigned client ID (extraColumns['Client ID']), when present
-        alignment:
-          anyOf:
-          - $ref: '#/components/schemas/AlignmentRead'
-          - type: 'null'
-          description: Current alignment read; null when the client has no read on or before the requested week
-        week:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Week
-          description: As-of week the read was resolved against; null when the latest read was returned
-        customerId:
-          type: string
-          title: Customerid
-      type: object
-      required:
-      - clientId
-      - customerId
-      title: ClientAlignmentResponse
-      description: Alignment read for a single client.
     ClientAlignment:
       properties:
         clientId:
@@ -207,32 +171,6 @@ components:
       - msg
       - type
       title: ValidationError
-    AlignmentListResponse:
-      properties:
-        clients:
-          items:
-            $ref: '#/components/schemas/ClientAlignment'
-          type: array
-          title: Clients
-        total:
-          type: integer
-          title: Total
-        week:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Week
-          description: As-of week the reads were resolved against; null when the latest reads were returned
-        customerId:
-          type: string
-          title: Customerid
-      type: object
-      required:
-      - clients
-      - total
-      - customerId
-      title: AlignmentListResponse
-      description: Response model for the client alignment list.
     AlignmentRead:
       properties:
         value:
@@ -271,6 +209,68 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
+    ClientAlignmentResponse:
+      properties:
+        clientId:
+          type: string
+          title: Clientid
+        clientName:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Clientname
+        externalClientId:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Externalclientid
+          description: Customer-assigned client ID (extraColumns['Client ID']), when present
+        alignment:
+          anyOf:
+          - $ref: '#/components/schemas/AlignmentRead'
+          - type: 'null'
+          description: Current alignment read; null when the client has no read on or before the requested week
+        week:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Week
+          description: As-of week the read was resolved against; null when the latest read was returned
+        customerId:
+          type: string
+          title: Customerid
+      type: object
+      required:
+      - clientId
+      - customerId
+      title: ClientAlignmentResponse
+      description: Alignment read for a single client.
+    AlignmentListResponse:
+      properties:
+        clients:
+          items:
+            $ref: '#/components/schemas/ClientAlignment'
+          type: array
+          title: Clients
+        total:
+          type: integer
+          title: Total
+        week:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Week
+          description: As-of week the reads were resolved against; null when the latest reads were returned
+        customerId:
+          type: string
+          title: Customerid
+      type: object
+      required:
+      - clients
+      - total
+      - customerId
+      title: AlignmentListResponse
+      description: Response model for the client alignment list.
   securitySchemes:
     APIKeyHeader:
       type: apiKey
