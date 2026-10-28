@@ -64,6 +64,133 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-2X is a company surfaced as a portfolio company of insight-partners and added to the API Evangelist network as a stub for enrichment. This profile is a lead awaiting the enrichment pipeline.
+2X is a B2B go-to-market services company that delivers what it calls GTM Human-Agentic Services — AI agents, expert embedded teams, and intelligent workflows sold through a subscription model rather than a traditional agency retainer. Founded in 2017 by three former B2B CMOs including Domenic Colasante, 2X grew out of Marketing-as-a-Service (MaaS) into full go-to-market orchestration spanning marketing operations, MarTech management, campaign build and demand generation, content and creative production, GTM engineering, and revenue strategy consulting. In June 2026 2X acquired Knownwell, an AI-as-a-Service commercial-intelligence platform, in a transaction valued at more than $400M; Knownwell founder David DeWolf became 2X's CEO and Colasante remained as founder. 2X also acquired GTM engineering firm The Kiln, a leading Clay implementation partner. With more than 1,000 team members across five continents, 2X serves over 150 enterprise clients including SAP, Ricoh, Docker, Seismic, Qlik, Brightcove, Emburse and GoTo, and is backed by private-equity firms Recognize and Insight Partners. Its public machine-readable API surface arrives through Knownwell — a documented REST API and an OAuth-protected remote MCP server for client, portfolio, and account-health intelligence.
 
-Backed by: insight-partners — https://2x.marketing/
+**Areas:** Company · Marketing · Marketing as a Service · B2B · MarTech · Marketing Operations · Consulting · Artificial Intelligence · Go-To-Market · Revenue Operations · Commercial Intelligence · Customer Success
+
+## 2X on APIs.io
+
+Everything profiled for 2X is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/2x/](https://apis.io/providers/2x/)** — or go straight to one of the APIs or properties below.
+
+### APIs (12)
+
+- [Knownwell MCP Server](https://apis.io/apis/2x/knownwell-mcp-server/) — OAuth-protected remote Model Context Protocol server for the Knownwell commercial-intelligence platform. An MCP client POSTs JSON-RPC to the endpoint after…
+- [2X Website (WordPress REST)](https://apis.io/apis/2x/2x-com-website-wordpress-rest/) — The public WordPress REST API (wp-json) of the 2X website at 2x.com: the route index of the site's content management system, catalogued as one site surface…
+- [2X Alignment API](https://apis.io/apis/2x/2x-alignment-api/) — The alignment API from 2X — 2 operation(s) for alignment.
+- [2X API Keys API](https://apis.io/apis/2x/2x-api-keys-api/) — The api-keys API from 2X — 2 operation(s) for api-keys.
+- [2X Clients API](https://apis.io/apis/2x/2x-clients-api/) — The clients API from 2X — 14 operation(s) for clients.
+- [2X Documentation API](https://apis.io/apis/2x/2x-documentation-api/) — The documentation API from 2X — 1 operation(s) for documentation.
+- [2X Health API](https://apis.io/apis/2x/2x-health-api/) — The health API from 2X — 1 operation(s) for health.
+- [2X Portfolios API](https://apis.io/apis/2x/2x-portfolios-api/) — The portfolios API from 2X — 2 operation(s) for portfolios.
+- [2X Root API](https://apis.io/apis/2x/2x-root-api/) — The root API from 2X — 1 operation(s) for root.
+- [2X Status API](https://apis.io/apis/2x/2x-status-api/) — The status API from 2X — 1 operation(s) for status.
+- [2X Streams API](https://apis.io/apis/2x/2x-streams-api/) — The streams API from 2X — 1 operation(s) for streams.
+- [2X Topics API](https://apis.io/apis/2x/2x-topics-api/) — The topics API from 2X — 1 operation(s) for topics.
+
+### Published properties
+
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
+
+#### MCP servers (1)
+
+Model Context Protocol servers that expose the API to agents.
+
+- [knownwell](https://apis.io/servers/2x/knownwell/)
+
+#### Overlays (1)
+
+OpenAPI overlays, including conversational phrasing for each operation.
+
+- [2X Knownwell Overlay](https://apis.io/overlays/2x/2x-knownwell-overlay/)
+
+#### Security (2)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [2X Authentication](https://apis.io/security/2x/2x-authentication/)
+- [2X Domain Security](https://apis.io/security/2x/2x-domain-security/)
+
+#### OAuth scopes (1)
+
+The permissions the API asks for.
+
+- [2X Scopes](https://apis.io/scopes/2x/2x-scopes/)
+
+#### Plans and pricing (1)
+
+Published plans, tiers and prices.
+
+- [2X Plans Pricing](https://apis.io/plans/2x/2x-plans-pricing/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [2X Rate Limits](https://apis.io/rate-limits/2x/2x-rate-limits/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://2x.com/)
+- [Documentation](https://api.knownwell.com/docs)
+- [API reference](https://api.knownwell.com/docs)
+- [Support](https://2x.com/contact/)
+- [Blog](https://2x.com/blog/)
+- [Privacy policy](https://2x.com/privacy-policy/)
+- [Status](https://api.knownwell.com/status)
+
+## API Evangelist rating
+
+**Kin Score 34.6** — thin · rubric 0.25.0 · scored 2026-10-23
+
+| Facet | Score |
+|---|---|
+| Discoverability | 66.7 |
+| Contract quality | 41.4 |
+| Contract governance | 4.5 |
+| Operational transparency | 47.4 |
+| Developer ergonomics | 37.5 |
+| Access clarity | 10.5 |
+
+**Agent readiness 48.8** — agent-ready (gated down from agent-native)
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | — |
+| Reversibility Documented | — |
+| MCP Server | verified |
+| Auth Clarity | served (partial credit) |
+| Idempotency | — |
+| Error Semantics | verified |
+| OpenAPI Examples | — |
+| Rate Limit Signal | documented (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | derived (partial credit) |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | served (partial credit) |
+| Protected Resource Metadata | verified |
+| Dynamic Client Registration | yes |
+| Agentic Commerce | — |
+| Pagination Ratio | — |
+| Operation Distinctiveness | distinct |
+
+**Regulatory alignment 28.2** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/2x/](https://apis.io/providers/2x/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for 2X: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/2x/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
